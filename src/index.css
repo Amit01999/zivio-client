@@ -1,0 +1,516 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* LIGHT MODE - Bangladesh Real Estate Marketplace (Purple Theme) */
+:root {
+  --button-outline: rgba(0, 0, 0, .10);
+  --badge-outline: rgba(0, 0, 0, .05);
+  --opaque-button-border-intensity: -8;
+  --elevate-1: rgba(0, 0, 0, .03);
+  --elevate-2: rgba(0, 0, 0, .08);
+
+  /* Core backgrounds */
+  --background: 0 0% 100%;
+  --foreground: 292 15% 14%;
+  --border: 292 10% 89%;
+
+  /* Card surfaces */
+  --card: 0 0% 99%;
+  --card-foreground: 292 15% 14%;
+  --card-border: 292 10% 92%;
+
+  /* Sidebar */
+  --sidebar: 292 20% 97%;
+  --sidebar-foreground: 292 15% 15%;
+  --sidebar-border: 292 15% 92%;
+  --sidebar-primary: 292 17% 41%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 292 15% 92%;
+  --sidebar-accent-foreground: 292 15% 15%;
+  --sidebar-ring: 292 17% 41%;
+
+  /* Popover */
+  --popover: 0 0% 98%;
+  --popover-foreground: 292 15% 14%;
+  --popover-border: 292 10% 90%;
+
+  /* Primary - Purple #75577A */
+  --primary: 292 17% 41%;
+  --primary-foreground: 0 0% 100%;
+  --primary-dark: 292 17% 31%;
+  --primary-light: 292 17% 60%;
+  --primary-soft: 292 17% 95%;
+
+  /* Secondary - Light Pink #E8CDD1 */
+  --secondary: 352 44% 86%;
+  --secondary-foreground: 292 15% 18%;
+
+  /* Muted */
+  --muted: 292 10% 95%;
+  --muted-foreground: 292 10% 42%;
+
+  /* Accent - Soft Pink #E8CDD1 */
+  --accent: 352 44% 86%;
+  --accent-foreground: 292 17% 41%;
+  --accent-dark: 352 44% 76%;
+  --accent-light: 352 44% 95%;
+
+  /* Destructive */
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* Form inputs */
+  --input: 292 10% 78%;
+  --ring: 292 17% 41%;
+
+  /* Charts */
+  --chart-1: 292 17% 41%;
+  --chart-2: 352 44% 80%;
+  --chart-3: 240 50% 55%;
+  --chart-4: 310 35% 45%;
+  --chart-5: 330 50% 60%;
+
+  /* Special badges */
+  --featured: 352 44% 82%;
+  --verified: 292 17% 41%;
+
+  /* Typography */
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-heading: Poppins, Inter, system-ui, sans-serif;
+  --font-mono: Menlo, monospace;
+
+  --radius: .5rem;
+
+  /* Shadows for depth */
+  --shadow-2xs: 0px 1px 2px 0px hsl(220 13% 14% / 0.03);
+  --shadow-xs: 0px 1px 3px 0px hsl(220 13% 14% / 0.04);
+  --shadow-sm: 0px 2px 4px -1px hsl(220 13% 14% / 0.05), 0px 1px 2px -1px hsl(220 13% 14% / 0.03);
+  --shadow: 0px 4px 6px -1px hsl(220 13% 14% / 0.06), 0px 2px 4px -1px hsl(220 13% 14% / 0.04);
+  --shadow-md: 0px 6px 10px -1px hsl(220 13% 14% / 0.07), 0px 4px 6px -1px hsl(220 13% 14% / 0.05);
+  --shadow-lg: 0px 10px 15px -3px hsl(220 13% 14% / 0.08), 0px 4px 6px -2px hsl(220 13% 14% / 0.04);
+  --shadow-xl: 0px 20px 25px -5px hsl(220 13% 14% / 0.10), 0px 10px 10px -5px hsl(220 13% 14% / 0.04);
+  --shadow-2xl: 0px 25px 50px -12px hsl(220 13% 14% / 0.25);
+
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+
+  --sidebar-primary-border: hsl(var(--sidebar-primary));
+  --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --sidebar-accent-border: hsl(var(--sidebar-accent));
+  --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --primary-border: hsl(var(--primary));
+  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --secondary-border: hsl(var(--secondary));
+  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --muted-border: hsl(var(--muted));
+  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --accent-border: hsl(var(--accent));
+  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --destructive-border: hsl(var(--destructive));
+  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+}
+
+/* DARK MODE - Purple Theme */
+.dark {
+  --button-outline: rgba(255, 255, 255, .10);
+  --badge-outline: rgba(255, 255, 255, .05);
+  --opaque-button-border-intensity: 9;
+  --elevate-1: rgba(255, 255, 255, .04);
+  --elevate-2: rgba(255, 255, 255, .09);
+
+  /* Core backgrounds */
+  --background: 292 20% 8%;
+  --foreground: 0 0% 98%;
+  --border: 292 15% 18%;
+
+  /* Card surfaces */
+  --card: 292 18% 10%;
+  --card-foreground: 0 0% 98%;
+  --card-border: 292 15% 14%;
+
+  /* Sidebar */
+  --sidebar: 292 18% 11%;
+  --sidebar-foreground: 0 0% 95%;
+  --sidebar-border: 292 15% 16%;
+  --sidebar-primary: 292 17% 51%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 292 15% 18%;
+  --sidebar-accent-foreground: 0 0% 95%;
+  --sidebar-ring: 292 17% 51%;
+
+  /* Popover */
+  --popover: 292 18% 12%;
+  --popover-foreground: 0 0% 98%;
+  --popover-border: 292 15% 18%;
+
+  /* Primary - Purple #75577A (brighter for dark mode) */
+  --primary: 292 17% 51%;
+  --primary-foreground: 0 0% 100%;
+  --primary-dark: 292 17% 38%;
+  --primary-light: 292 17% 65%;
+  --primary-soft: 292 17% 15%;
+
+  /* Secondary - Light Pink #E8CDD1 */
+  --secondary: 352 44% 82%;
+  --secondary-foreground: 292 15% 15%;
+
+  /* Muted */
+  --muted: 292 12% 17%;
+  --muted-foreground: 292 10% 62%;
+
+  /* Accent - Soft Pink */
+  --accent: 352 44% 78%;
+  --accent-foreground: 292 17% 20%;
+  --accent-dark: 352 44% 68%;
+  --accent-light: 352 44% 90%;
+
+  /* Destructive */
+  --destructive: 0 72% 55%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* Form inputs */
+  --input: 292 15% 28%;
+  --ring: 292 17% 51%;
+
+  /* Charts */
+  --chart-1: 292 17% 55%;
+  --chart-2: 352 44% 78%;
+  --chart-3: 240 50% 65%;
+  --chart-4: 310 35% 55%;
+  --chart-5: 330 50% 65%;
+
+  /* Special badges */
+  --featured: 352 44% 78%;
+  --verified: 292 17% 51%;
+
+  /* Shadows (subtle in dark mode) */
+  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.15);
+  --shadow-xs: 0px 1px 3px 0px hsl(0 0% 0% / 0.20);
+  --shadow-sm: 0px 2px 4px -1px hsl(0 0% 0% / 0.25), 0px 1px 2px -1px hsl(0 0% 0% / 0.15);
+  --shadow: 0px 4px 6px -1px hsl(0 0% 0% / 0.30), 0px 2px 4px -1px hsl(0 0% 0% / 0.20);
+  --shadow-md: 0px 6px 10px -1px hsl(0 0% 0% / 0.35), 0px 4px 6px -1px hsl(0 0% 0% / 0.25);
+  --shadow-lg: 0px 10px 15px -3px hsl(0 0% 0% / 0.40), 0px 4px 6px -2px hsl(0 0% 0% / 0.20);
+  --shadow-xl: 0px 20px 25px -5px hsl(0 0% 0% / 0.50), 0px 10px 10px -5px hsl(0 0% 0% / 0.25);
+  --shadow-2xl: 0px 25px 50px -12px hsl(0 0% 0% / 0.60);
+
+  --sidebar-primary-border: hsl(var(--sidebar-primary));
+  --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --sidebar-accent-border: hsl(var(--sidebar-accent));
+  --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --primary-border: hsl(var(--primary));
+  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --secondary-border: hsl(var(--secondary));
+  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --muted-border: hsl(var(--muted));
+  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --accent-border: hsl(var(--accent));
+  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --destructive-border: hsl(var(--destructive));
+  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer utilities {
+  input[type="search"]::-webkit-search-cancel-button {
+    @apply hidden;
+  }
+
+  [contenteditable][data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    color: hsl(var(--muted-foreground));
+    pointer-events: none;
+  }
+
+  .no-default-hover-elevate {}
+
+  .no-default-active-elevate {}
+
+  .toggle-elevate::before,
+  .toggle-elevate-2::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  .toggle-elevate.toggle-elevated::before {
+    background-color: var(--elevate-2);
+  }
+
+  .border.toggle-elevate::before {
+    inset: -1px;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate),
+  .active-elevate:not(.no-default-active-elevate),
+  .hover-elevate-2:not(.no-default-hover-elevate),
+  .active-elevate-2:not(.no-default-active-elevate) {
+    position: relative;
+    z-index: 0;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate)::after,
+  .active-elevate:not(.no-default-active-elevate)::after,
+  .hover-elevate-2:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:not(.no-default-active-elevate)::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    border-radius: inherit;
+    z-index: 999;
+  }
+
+  .hover-elevate:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-1);
+  }
+
+  .hover-elevate-2:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-2);
+  }
+
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
+    inset: -1px;
+  }
+
+  /* Property card image aspect ratio */
+  .aspect-property {
+    aspect-ratio: 16 / 10;
+  }
+
+  /* Smooth scroll behavior */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Glass effect for overlays */
+  .glass {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+  }
+
+  .dark .glass {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  /* Price tag gradient */
+  .price-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
+  }
+
+  /* Featured badge gradient */
+  .featured-gradient {
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent-dark)) 100%);
+  }
+
+  /* Hero gradient overlay */
+  .hero-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.1) 100%);
+  }
+
+  /* Line clamp utilities */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* End of index.css start my css */
+/* Z-INDEX LAYERING SYSTEM FOR PARALLAX */
+
+/* 
+  Z-Index Scale:
+  -10: Fixed hero background (stays behind everything)
+  0: Default content
+  10: Hero content overlay
+  20: Main content sections
+  30: Sticky elements
+  40: Footer
+  50: Header/Navigation
+  100: Modals/Overlays
+*/
+
+/* Fixed Hero Background - Lowest layer */
+.hero-fixed-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -10;
+  /* Behind everything */
+  width: 100%;
+  height: 100vh;
+}
+
+/* Main content sections - Must have solid backgrounds */
+.content-section {
+  position: relative;
+  z-index: 20;
+  background-color: white;
+  /* IMPORTANT: Solid background required */
+}
+
+/* Footer - High z-index and solid background */
+footer {
+  position: relative;
+  z-index: 40;
+  background-color: rgb(17 24 39);
+  /* Solid dark background */
+}
+
+/* Header/Navigation - Highest content z-index */
+header {
+  position: relative;
+  z-index: 50;
+  background-color: white;
+  /* Solid background */
+}
+
+/* Utility classes for proper layering */
+.z-hero-bg {
+  z-index: -10;
+}
+
+.z-hero-content {
+  z-index: 10;
+}
+
+.z-content {
+  z-index: 20;
+}
+
+.z-sticky {
+  z-index: 30;
+}
+
+.z-footer {
+  z-index: 40;
+}
+
+.z-header {
+  z-index: 50;
+}
+
+.z-modal {
+  z-index: 100;
+}
+
+/* Ensure all sections have solid backgrounds */
+.bg-solid-white {
+  background-color: white !important;
+}
+
+.bg-solid-gray {
+  background-color: rgb(249 250 251) !important;
+}
+
+.bg-solid-dark {
+  background-color: rgb(17 24 39) !important;
+}
+
+/* Fix for mobile devices */
+@media (max-width: 768px) {
+
+  /* On mobile, convert fixed to relative for better performance */
+  .hero-fixed-bg {
+    position: relative;
+    z-index: 0;
+    height: 100vh;
+  }
+}
+
+/* IMPORTANT RULES FOR FOOTER FIX */
+footer,
+.footer-wrapper {
+  /* Multiple background declarations for browser compatibility */
+  background: rgb(17, 24, 39);
+  background-color: rgb(17, 24, 39);
+  background-image: none;
+  position: relative;
+  z-index: 40;
+  /* Ensure footer covers the fixed hero */
+  isolation: isolate;
+}
+
+/* Additional footer insurance */
+.footer-container {
+  background: inherit;
+  position: relative;
+  z-index: 41;
+}
+
+/* Ensure last section before footer has solid background */
+.last-content-section {
+  position: relative;
+  z-index: 35;
+  background-color: white;
+  padding-bottom: 0;
+  /* No gap between last section and footer */
+  margin-bottom: 0;
+}
+
+/* Remove any gaps that might show the hero image */
+* {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+section+section,
+section+footer,
+div+footer {
+  margin-top: 0;
+}
