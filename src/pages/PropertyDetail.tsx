@@ -48,6 +48,7 @@ import {
 } from '@/lib/format';
 import { useAuth } from '@/lib/auth';
 import { apiRequest } from '@/lib/queryClient';
+import { API_URL } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import { Link } from 'wouter';
@@ -75,7 +76,7 @@ export default function PropertyDetail() {
   } = useQuery<ListingWithBroker>({
     queryKey: ['/api/listings', params.slug],
     queryFn: async () => {
-      const response = await fetch(`/api/listings/${params.slug}`);
+      const response = await fetch(`${API_URL}/listings/${params.slug}`);
       if (!response.ok) throw new Error('Failed to fetch listing');
       return response.json();
     },
@@ -86,7 +87,7 @@ export default function PropertyDetail() {
     queryKey: ['/api/listings', { similar: listing?.id }],
     queryFn: async () => {
       const response = await fetch(
-        `/api/listings?city=${listing?.city}&propertyType=${listing?.propertyType}&limit=4&status=published`
+        `${API_URL}/listings?city=${listing?.city}&propertyType=${listing?.propertyType}&limit=4&status=published`
       );
       if (!response.ok) throw new Error('Failed to fetch');
       return response.json();

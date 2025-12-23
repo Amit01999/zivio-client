@@ -29,6 +29,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ListingCard, ListingCardSkeleton } from '@/components/ListingCard';
 import { useAuth } from '@/lib/auth';
 import type { Listing, PaginatedResponse, SafeUser } from '@/types/schema';
+import { API_URL } from '@/lib/api';
 
 export default function Dashboard() {
   const { user, isLoading: authLoading } = useAuth();
@@ -40,7 +41,7 @@ export default function Dashboard() {
     queryKey: ['/api/listings/my'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('/api/listings/my', {
+      const response = await fetch(`${API_URL}/listings/my`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');
@@ -55,7 +56,7 @@ export default function Dashboard() {
     queryKey: ['/api/favorites'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('/api/favorites', {
+      const response = await fetch(`${API_URL}/favorites`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');

@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/select';
 import { bangladeshCities, type Broker, type SafeUser } from '@/types/schema';
 import { useState } from 'react';
+import { API_URL } from '@/lib/api';
 
 export default function Agents() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -27,7 +28,7 @@ export default function Agents() {
       if (searchQuery) params.set('q', searchQuery);
       params.set('verified', 'true');
 
-      const response = await fetch(`/api/brokers?${params.toString()}`);
+      const response = await fetch(`${API_URL}/brokers?${params.toString()}`);
       if (!response.ok) throw new Error('Failed to fetch agents');
       return response.json();
     },

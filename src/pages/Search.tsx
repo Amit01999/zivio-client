@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { API_URL } from '@/lib/api';
 import type { SearchFilters, Listing, PaginatedResponse } from '@/types/schema';
 
 type ViewMode = 'grid' | 'list' | 'map';
@@ -147,7 +148,7 @@ export default function Search() {
         console.log('[Search] Fetching with query:', queryString);
         console.log('[Search] Current filters:', filters);
 
-        const response = await fetch(`/api/listings?${queryString}`);
+        const response = await fetch(`${API_URL}/listings?${queryString}`);
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(errorData.message || 'Failed to fetch listings');

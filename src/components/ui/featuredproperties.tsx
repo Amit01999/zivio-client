@@ -4,12 +4,13 @@ import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { ListingCard, ListingCardSkeleton } from '@/components/ListingCard';
 import type { Listing, PaginatedResponse } from '@/types/schema';
+import { API_URL } from '@/lib/api';
 
 export default function FeaturedProperties() {
   const { data, isLoading, error } = useQuery<PaginatedResponse<Listing>>({
     queryKey: ['/api/listings', { isFeatured: true, limit: 8 }],
     queryFn: async () => {
-      const response = await fetch('/api/listings?isFeatured=true&limit=8');
+      const response = await fetch(`${API_URL}/listings?isFeatured=true&limit=8`);
       if (!response.ok) {
         throw new Error('Failed to fetch featured listings');
       }

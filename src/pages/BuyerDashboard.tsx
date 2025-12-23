@@ -27,6 +27,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ListingCard, ListingCardSkeleton } from '@/components/ListingCard';
 import { useAuth } from '@/lib/auth';
 import type { Listing, PropertyInquiryWithDetails } from '@/types/schema';
+import { API_URL } from '@/lib/api';
 
 export default function BuyerDashboard() {
   const { user, isLoading: authLoading } = useAuth();
@@ -37,7 +38,7 @@ export default function BuyerDashboard() {
     queryKey: ['/api/dashboard/buyer'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('/api/dashboard/buyer', {
+      const response = await fetch(`${API_URL}/dashboard/buyer`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');
@@ -53,7 +54,7 @@ export default function BuyerDashboard() {
     queryKey: ['/api/favorites'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('/api/favorites', {
+      const response = await fetch(`${API_URL}/favorites`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');
@@ -69,7 +70,7 @@ export default function BuyerDashboard() {
     queryKey: ['/api/property-inquiries'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('/api/property-inquiries', {
+      const response = await fetch(`${API_URL}/property-inquiries`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');
@@ -83,7 +84,7 @@ export default function BuyerDashboard() {
     queryKey: ['/api/comparison-cart'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('/api/comparison-cart', {
+      const response = await fetch(`${API_URL}/comparison-cart`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');

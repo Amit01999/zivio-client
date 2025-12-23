@@ -4,12 +4,13 @@ import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { ListingCard, ListingCardSkeleton } from '@/components/ListingCard';
 import type { Listing, PaginatedResponse } from '@/types/schema';
+import { API_URL } from '@/lib/api';
 
 export default function RecentProperties() {
   const { data, isLoading } = useQuery<PaginatedResponse<Listing>>({
     queryKey: ['/api/listings', { sortBy: 'newest', limit: 8 }],
     queryFn: async () => {
-      const response = await fetch('/api/listings?sortBy=newest&limit=8&status=published');
+      const response = await fetch(`${API_URL}/listings?sortBy=newest&limit=8&status=published`);
       if (!response.ok) throw new Error('Failed to fetch listings');
       return response.json();
     },

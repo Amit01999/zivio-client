@@ -13,6 +13,7 @@ import { useLocation, Link } from "wouter";
 import type { ConversationWithDetails, MessageWithSender } from "@/types/schema";
 import { formatRelativeTime } from "@/lib/format";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { API_URL } from '@/lib/api';
 
 function MessagesContent() {
   const { user } = useAuth();
@@ -28,7 +29,7 @@ function MessagesContent() {
     queryKey: ["/api/conversations"],
     queryFn: async () => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch("/api/conversations", {
+      const response = await fetch(`${API_URL}/conversations`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error("Failed to fetch");
@@ -60,7 +61,7 @@ function MessagesContent() {
     setSending(true);
     try {
       const token = localStorage.getItem("accessToken");
-      await fetch(`/api/conversations/${selectedConversation}/messages`, {
+      await fetch(`${API_URL}/conversations/${selectedConversation}/messages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

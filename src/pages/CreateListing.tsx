@@ -51,6 +51,7 @@ import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/lib/auth';
 import { apiRequest, queryClient } from '@/lib/queryClient';
+import { API_URL } from '@/lib/api';
 import {
   listingFormSchema,
   propertyTypes,
@@ -172,7 +173,7 @@ function CreateListingContent() {
       }
 
       // Upload to server (which uploads to Cloudinary)
-      const response = await fetch('/api/upload/images', {
+      const response = await fetch(`${API_URL}/upload/images`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

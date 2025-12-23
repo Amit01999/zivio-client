@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { queryClient } from '@/lib/queryClient';
 import type { ComparisonCartWithListings } from '@/types/schema';
 import { formatPrice } from '@/lib/format';
+import { API_URL } from '@/lib/api';
 
 export default function ComparisonPage() {
   const { toast } = useToast();
@@ -23,7 +24,7 @@ export default function ComparisonPage() {
     queryKey: ['/api/comparison-cart'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('/api/comparison-cart', {
+      const response = await fetch(`${API_URL}/comparison-cart`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');
@@ -35,7 +36,7 @@ export default function ComparisonPage() {
   const removeFromCart = useMutation({
     mutationFn: async (listingId: string) => {
       const token = localStorage.getItem('accessToken');
-      await fetch(`/api/comparison-cart/${listingId}`, {
+      await fetch(`${API_URL}/comparison-cart/${listingId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -50,7 +51,7 @@ export default function ComparisonPage() {
   const clearCart = useMutation({
     mutationFn: async () => {
       const token = localStorage.getItem('accessToken');
-      await fetch('/api/comparison-cart', {
+      await fetch(`${API_URL}/comparison-cart`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });

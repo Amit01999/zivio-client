@@ -64,6 +64,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { SafeUser, Listing, Broker, PaginatedResponse } from "@/types/schema";
 import { formatPrice, formatDate } from "@/lib/format";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { API_URL } from '@/lib/api';
 
 function AdminContent() {
   const { toast } = useToast();
@@ -78,7 +79,7 @@ function AdminContent() {
     queryKey: ["/api/admin/stats"],
     queryFn: async () => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch("/api/admin/stats", {
+      const response = await fetch(`${API_URL}/admin/stats`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error("Failed to fetch");
@@ -90,7 +91,7 @@ function AdminContent() {
     queryKey: ["/api/admin/users"],
     queryFn: async () => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch("/api/admin/users", {
+      const response = await fetch(`${API_URL}/admin/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error("Failed to fetch");
@@ -121,7 +122,7 @@ function AdminContent() {
     queryKey: ["/api/admin/brokers"],
     queryFn: async () => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch("/api/admin/brokers", {
+      const response = await fetch(`${API_URL}/admin/brokers`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error("Failed to fetch");
@@ -132,7 +133,7 @@ function AdminContent() {
   const approveListing = useMutation({
     mutationFn: async (listingId: string) => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`/api/admin/listings/${listingId}/approve`, {
+      const response = await fetch(`${API_URL}/admin/listings/${listingId}/approve`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -152,7 +153,7 @@ function AdminContent() {
   const rejectListing = useMutation({
     mutationFn: async (listingId: string) => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`/api/admin/listings/${listingId}/reject`, {
+      const response = await fetch(`${API_URL}/admin/listings/${listingId}/reject`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -172,7 +173,7 @@ function AdminContent() {
   const toggleFeatured = useMutation({
     mutationFn: async (listingId: string) => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`/api/admin/listings/${listingId}/toggle-featured`, {
+      const response = await fetch(`${API_URL}/admin/listings/${listingId}/toggle-featured`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -192,7 +193,7 @@ function AdminContent() {
   const deleteListingMutation = useMutation({
     mutationFn: async (listingId: string) => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`/api/admin/listings/${listingId}`, {
+      const response = await fetch(`${API_URL}/admin/listings/${listingId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -213,7 +214,7 @@ function AdminContent() {
   const updateListingMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<Listing> }) => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`/api/admin/listings/${id}`, {
+      const response = await fetch(`${API_URL}/admin/listings/${id}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -237,7 +238,7 @@ function AdminContent() {
   const updateUserMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<SafeUser> }) => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`/api/admin/users/${id}`, {
+      const response = await fetch(`${API_URL}/admin/users/${id}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -261,7 +262,7 @@ function AdminContent() {
   const deleteUserMutation = useMutation({
     mutationFn: async (userId: string) => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`/api/admin/users/${userId}`, {
+      const response = await fetch(`${API_URL}/admin/users/${userId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -282,7 +283,7 @@ function AdminContent() {
   const verifyBroker = useMutation({
     mutationFn: async (brokerId: string) => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`/api/admin/brokers/${brokerId}/verify`, {
+      const response = await fetch(`${API_URL}/admin/brokers/${brokerId}/verify`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });

@@ -4,6 +4,7 @@ import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { ListingCard, ListingCardSkeleton } from './ListingCard';
 import type { Listing, PaginatedResponse } from '@/types/schema';
+import { API_URL } from '@/lib/api';
 
 interface FeaturedListingsProps {
   title?: string;
@@ -28,7 +29,7 @@ export function FeaturedListings({
   const { data, isLoading, error } = useQuery<PaginatedResponse<Listing>>({
     queryKey: ['/api/listings', { featured: true, limit, city }],
     queryFn: async () => {
-      const response = await fetch(`/api/listings?${queryParams.toString()}`);
+      const response = await fetch(`${API_URL}/listings?${queryParams.toString()}`);
       if (!response.ok) throw new Error('Failed to fetch listings');
       return response.json();
     },

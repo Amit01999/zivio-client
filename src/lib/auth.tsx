@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import type { SafeUser, AuthTokens } from "@/types/schema";
 import { apiRequest } from "./queryClient";
+import { API_URL } from "./api";
 
 interface AuthContextType {
   user: SafeUser | null;
@@ -36,7 +37,7 @@ async function refreshAccessToken(): Promise<string | null> {
       return null;
     }
 
-    const response = await fetch("/api/auth/refresh", {
+    const response = await fetch(`${API_URL}/auth/refresh`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -91,7 +92,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         token = newToken;
       }
 
-      const response = await fetch("/api/auth/me", {
+      const response = await fetch(`${API_URL}/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -105,7 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const newToken = await refreshAccessToken();
         if (newToken) {
           // Retry with new token
-          const retryResponse = await fetch("/api/auth/me", {
+          const retryResponse = await fetch(`${API_URL}/auth/me`, {
             headers: {
               Authorization: `Bearer ${newToken}`,
             },
@@ -167,8 +168,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("accessToken", data.tokens.accessToken);
     localStorage.setItem("refreshToken", data.tokens.refreshToken);
     setUser(data.user);
-
-    return data.user;
   };
 
   const register = async (data: { name: string; email: string; password: string; confirmPassword: string; phone?: string; role?: string }) => {
@@ -178,8 +177,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("accessToken", result.tokens.accessToken);
     localStorage.setItem("refreshToken", result.tokens.refreshToken);
     setUser(result.user);
-
-    return result.user;
   };
 
   const logout = async () => {
