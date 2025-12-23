@@ -148,7 +148,7 @@ export default function Search() {
         console.log('[Search] Fetching with query:', queryString);
         console.log('[Search] Current filters:', filters);
 
-        const response = await fetch(`${API_URL}/listings?${queryString}`);
+        const response = await fetch(`${API_URL}/api/listings?${queryString}`);
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(errorData.message || 'Failed to fetch listings');

@@ -45,7 +45,7 @@ export default function SellerDashboard() {
     queryKey: ['/api/dashboard/seller'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/dashboard/seller`, {
+      const response = await fetch(`${API_URL}/api/dashboard/seller`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');
@@ -61,7 +61,7 @@ export default function SellerDashboard() {
     queryKey: ['/api/listings/my'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/listings/my`, {
+      const response = await fetch(`${API_URL}/api/listings/my`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');

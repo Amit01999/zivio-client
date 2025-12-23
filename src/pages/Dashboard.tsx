@@ -41,7 +41,7 @@ export default function Dashboard() {
     queryKey: ['/api/listings/my'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/listings/my`, {
+      const response = await fetch(`${API_URL}/api/listings/my`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');
@@ -56,7 +56,7 @@ export default function Dashboard() {
     queryKey: ['/api/favorites'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/favorites`, {
+      const response = await fetch(`${API_URL}/api/favorites`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');

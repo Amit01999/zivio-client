@@ -29,7 +29,7 @@ export function FeaturedListings({
   const { data, isLoading, error } = useQuery<PaginatedResponse<Listing>>({
     queryKey: ['/api/listings', { featured: true, limit, city }],
     queryFn: async () => {
-      const response = await fetch(`${API_URL}/listings?${queryParams.toString()}`);
+      const response = await fetch(`${API_URL}/api/listings?${queryParams.toString()}`);
       if (!response.ok) throw new Error('Failed to fetch listings');
       return response.json();
     },

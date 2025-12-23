@@ -38,7 +38,7 @@ export default function BuyerDashboard() {
     queryKey: ['/api/dashboard/buyer'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/dashboard/buyer`, {
+      const response = await fetch(`${API_URL}/api/dashboard/buyer`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');
@@ -54,7 +54,7 @@ export default function BuyerDashboard() {
     queryKey: ['/api/favorites'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/favorites`, {
+      const response = await fetch(`${API_URL}/api/favorites`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');
@@ -70,7 +70,7 @@ export default function BuyerDashboard() {
     queryKey: ['/api/property-inquiries'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/property-inquiries`, {
+      const response = await fetch(`${API_URL}/api/property-inquiries`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');
@@ -84,7 +84,7 @@ export default function BuyerDashboard() {
     queryKey: ['/api/comparison-cart'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/comparison-cart`, {
+      const response = await fetch(`${API_URL}/api/comparison-cart`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');

@@ -29,7 +29,7 @@ function MessagesContent() {
     queryKey: ["/api/conversations"],
     queryFn: async () => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`${API_URL}/conversations`, {
+      const response = await fetch(`${API_URL}/api/conversations`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error("Failed to fetch");
@@ -61,7 +61,7 @@ function MessagesContent() {
     setSending(true);
     try {
       const token = localStorage.getItem("accessToken");
-      await fetch(`${API_URL}/conversations/${selectedConversation}/messages`, {
+      await fetch(`${API_URL}/api/conversations/${selectedConversation}/messages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

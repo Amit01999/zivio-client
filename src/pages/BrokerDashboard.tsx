@@ -45,7 +45,7 @@ export default function BrokerDashboard() {
     queryKey: ['/api/dashboard/broker'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/dashboard/broker`, {
+      const response = await fetch(`${API_URL}/api/dashboard/broker`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');
@@ -61,7 +61,7 @@ export default function BrokerDashboard() {
     queryKey: ['/api/listings/my'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch(`${API_URL}/listings/my`, {
+      const response = await fetch(`${API_URL}/api/listings/my`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch');

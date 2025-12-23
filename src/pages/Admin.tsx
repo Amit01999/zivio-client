@@ -79,7 +79,7 @@ function AdminContent() {
     queryKey: ["/api/admin/stats"],
     queryFn: async () => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`${API_URL}/admin/stats`, {
+      const response = await fetch(`${API_URL}/api/admin/stats`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error("Failed to fetch");
@@ -91,7 +91,7 @@ function AdminContent() {
     queryKey: ["/api/admin/users"],
     queryFn: async () => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`${API_URL}/admin/users`, {
+      const response = await fetch(`${API_URL}/api/admin/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error("Failed to fetch");
@@ -122,7 +122,7 @@ function AdminContent() {
     queryKey: ["/api/admin/brokers"],
     queryFn: async () => {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`${API_URL}/admin/brokers`, {
+      const response = await fetch(`${API_URL}/api/admin/brokers`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error("Failed to fetch");

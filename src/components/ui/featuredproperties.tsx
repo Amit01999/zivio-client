@@ -10,7 +10,7 @@ export default function FeaturedProperties() {
   const { data, isLoading, error } = useQuery<PaginatedResponse<Listing>>({
     queryKey: ['/api/listings', { isFeatured: true, limit: 8 }],
     queryFn: async () => {
-      const response = await fetch(`${API_URL}/listings?isFeatured=true&limit=8`);
+      const response = await fetch(`${API_URL}/api/listings?isFeatured=true&limit=8`);
       if (!response.ok) {
         throw new Error('Failed to fetch featured listings');
       }

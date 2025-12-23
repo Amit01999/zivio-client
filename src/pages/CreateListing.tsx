@@ -173,7 +173,7 @@ function CreateListingContent() {
       }
 
       // Upload to server (which uploads to Cloudinary)
-      const response = await fetch(`${API_URL}/upload/images`, {
+      const response = await fetch(`${API_URL}/api/upload/images`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

@@ -10,7 +10,7 @@ export default function RecentProperties() {
   const { data, isLoading } = useQuery<PaginatedResponse<Listing>>({
     queryKey: ['/api/listings', { sortBy: 'newest', limit: 8 }],
     queryFn: async () => {
-      const response = await fetch(`${API_URL}/listings?sortBy=newest&limit=8&status=published`);
+      const response = await fetch(`${API_URL}/api/listings?sortBy=newest&limit=8&status=published`);
       if (!response.ok) throw new Error('Failed to fetch listings');
       return response.json();
     },

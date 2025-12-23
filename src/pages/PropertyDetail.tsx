@@ -76,7 +76,7 @@ export default function PropertyDetail() {
   } = useQuery<ListingWithBroker>({
     queryKey: ['/api/listings', params.slug],
     queryFn: async () => {
-      const response = await fetch(`${API_URL}/listings/${params.slug}`);
+      const response = await fetch(`${API_URL}/api/listings/${params.slug}`);
       if (!response.ok) throw new Error('Failed to fetch listing');
       return response.json();
     },
@@ -87,7 +87,7 @@ export default function PropertyDetail() {
     queryKey: ['/api/listings', { similar: listing?.id }],
     queryFn: async () => {
       const response = await fetch(
-        `${API_URL}/listings?city=${listing?.city}&propertyType=${listing?.propertyType}&limit=4&status=published`
+        `${API_URL}/api/listings?city=${listing?.city}&propertyType=${listing?.propertyType}&limit=4&status=published`
       );
       if (!response.ok) throw new Error('Failed to fetch');
       return response.json();

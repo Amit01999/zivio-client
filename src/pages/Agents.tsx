@@ -28,7 +28,7 @@ export default function Agents() {
       if (searchQuery) params.set('q', searchQuery);
       params.set('verified', 'true');
 
-      const response = await fetch(`${API_URL}/brokers?${params.toString()}`);
+      const response = await fetch(`${API_URL}/api/brokers?${params.toString()}`);
       if (!response.ok) throw new Error('Failed to fetch agents');
       return response.json();
     },
