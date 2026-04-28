@@ -1,29 +1,46 @@
-import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider } from "@/lib/auth";
-import { ThemeProvider } from "@/lib/theme";
-import { Layout } from "@/components/Layout";
+import { useEffect, useLayoutEffect } from 'react';
+import { Switch, Route, useLocation } from 'wouter';
+import { queryClient } from './lib/queryClient';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from '@/components/ui/toaster';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { AuthProvider } from '@/lib/auth';
+import { ThemeProvider } from '@/lib/theme';
+import { Layout } from '@/components/Layout';
 
-import Home from "@/pages/Home";
-import Search from "@/pages/Search";
-import PropertyDetail from "@/pages/PropertyDetail";
-import Login from "@/pages/Login";
-import Register from "@/pages/Register";
-import Dashboard from "@/pages/Dashboard";
-import DashboardRouter from "@/pages/DashboardRouter";
-import BuyerDashboard from "@/pages/BuyerDashboard";
-import SellerDashboard from "@/pages/SellerDashboard";
-import BrokerDashboard from "@/pages/BrokerDashboard";
-import ComparisonPage from "@/pages/ComparisonPage";
-import CreateListing from "@/pages/CreateListing";
-import Agents from "@/pages/Agents";
-import Messages from "@/pages/Messages";
-import Admin from "@/pages/Admin";
-import ForgotPassword from "@/pages/ForgotPassword";
-import NotFound from "@/pages/not-found";
+import Home from '@/pages/Home';
+import Search from '@/pages/Search';
+import PropertyDetail from '@/pages/PropertyDetail';
+import Login from '@/pages/Login';
+import Register from '@/pages/Register';
+import Dashboard from '@/pages/Dashboard';
+import DashboardRouter from '@/pages/DashboardRouter';
+import BuyerDashboard from '@/pages/BuyerDashboard';
+import SellerDashboard from '@/pages/SellerDashboard';
+import BrokerDashboard from '@/pages/BrokerDashboard';
+import ComparisonPage from '@/pages/ComparisonPage';
+import CreateListing from '@/pages/CreateListing';
+import Agents from '@/pages/Agents';
+import Messages from '@/pages/Messages';
+import Admin from '@/pages/Admin';
+import ForgotPassword from '@/pages/ForgotPassword';
+import NotFound from '@/pages/not-found';
+
+function ScrollToTop() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [location]);
+
+  return null;
+}
 
 function MainRouter() {
   return (
@@ -57,6 +74,7 @@ function App() {
       <ThemeProvider>
         <AuthProvider>
           <TooltipProvider>
+            <ScrollToTop />
             <Switch>
               {/* Admin panel renders its own full-screen layout — no Navbar/Footer */}
               <Route path="/admin" component={Admin} />

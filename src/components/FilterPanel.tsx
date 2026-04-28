@@ -121,7 +121,7 @@ export function FilterPanel({
       !(Array.isArray(value) && value.length === 0)
   ).length;
 
-  const FilterContent = () => (
+  const FilterContent = ({ showActions = true }: { showActions?: boolean }) => (
     <div className="space-y-6">
       {/* Purpose Section - Always Visible */}
       <div className="border-b border-border/70 pb-5">
@@ -542,25 +542,26 @@ export function FilterPanel({
         </AccordionItem>
       </Accordion>
 
-      {/* Apply Filters Button */}
-      <div className="mt-6 space-y-3 border-t border-border/70 pt-5">
-        <Button
-          onClick={applyFilters}
-          className="w-full"
-          size="lg"
-          data-testid="apply-filters-button"
-        >
-          Apply Filters
-        </Button>
-        <Button
-          onClick={clearAllFilters}
-          variant="outline"
-          className="w-full"
-          size="sm"
-        >
-          Clear All
-        </Button>
-      </div>
+      {showActions && (
+        <div className="mt-6 space-y-3 border-t border-border/70 pt-5">
+          <Button
+            onClick={applyFilters}
+            className="w-full"
+            size="lg"
+            data-testid="apply-filters-button"
+          >
+            Apply Filters
+          </Button>
+          <Button
+            onClick={clearAllFilters}
+            variant="outline"
+            className="w-full"
+            size="sm"
+          >
+            Clear All
+          </Button>
+        </div>
+      )}
     </div>
   );
 
@@ -641,7 +642,7 @@ export function FilterPanel({
               </SheetTitle>
             </SheetHeader>
             <ScrollArea className="h-[calc(100vh-180px)] pr-4">
-              <FilterContent />
+              <FilterContent showActions={false} />
             </ScrollArea>
             <SheetFooter className="mt-4 flex-col space-y-2">
               <Button

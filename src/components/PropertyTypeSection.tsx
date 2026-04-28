@@ -14,103 +14,98 @@ import heroImage from '../../assets/h11.png';
 export function PropertyTypeSection() {
   return (
     <section
-      className="relative overflow-hidden bg-fixed bg-center bg-cover bg-no-repeat py-16 md:py-24"
-      style={{
-        backgroundImage: `url(${heroImage})`,
-      }}
+      className="relative overflow-hidden bg-fixed bg-center bg-cover bg-no-repeat py-20 md:py-32"
+      style={{ backgroundImage: `url(${heroImage})` }}
       data-testid="section-property-types"
     >
-      {/* <div className="absolute inset-0 bg-[#F5F0EA]/82" />
-      <div className="absolute inset-0 bg-gradient-to-br from-[#F5F0EA]/92 via-[#E8CDD1]/68 to-[#401F48]/54" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.42),transparent_36%),linear-gradient(to_bottom,rgba(245,240,234,0.35),rgba(245,240,234,0.12))]" /> */}
+      {/* Subtle edge vignette — image shows through fully */}
+      <div className="absolute inset-0 bg-black/22" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/35" />
+
+      {/* Decorative corner frames */}
+      <div className="absolute top-8 left-8 w-20 h-20 border-l-2 border-t-2 border-[#C9A96E]/35 pointer-events-none" />
+      <div className="absolute top-8 right-8 w-20 h-20 border-r-2 border-t-2 border-[#C9A96E]/35 pointer-events-none" />
+      <div className="absolute bottom-8 left-8 w-20 h-20 border-l-2 border-b-2 border-[#C9A96E]/35 pointer-events-none" />
+      <div className="absolute bottom-8 right-8 w-20 h-20 border-r-2 border-b-2 border-[#C9A96E]/35 pointer-events-none" />
 
       <div className="container mx-auto px-8 md:px-12 lg:px-16 relative z-10">
         {/* Header */}
-        <div className="mx-auto mb-14 max-w-3xl text-center">
-          <div className="mb-5 inline-flex items-center justify-center gap-2 rounded-full border border-[#401F48]/20 bg-[#F5F0EA]/82 px-5 py-2.5 shadow-[0_14px_34px_rgba(101,75,107,0.14)] backdrop-blur-md animate-slide-down">
-            <Sparkles className="h-4 w-4 fill-[#E8CDD1] text-[#401F48]" />
-            <span className="text-xs font-bold uppercase tracking-[0.22em] text-[#401F48]">
-              Explore Properties
-            </span>
+        <div className="mx-auto mb-16 max-w-3xl text-center">
+          <div className="mb-7 flex items-center justify-center gap-4 animate-slide-down">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#C9A96E]/70" />
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="h-3 w-3 fill-[#C9A96E] text-[#C9A96E]" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#C9A96E]">
+                Curated Collection
+              </span>
+              <Sparkles className="h-3 w-3 fill-[#C9A96E] text-[#C9A96E]" />
+            </div>
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#C9A96E]/70" />
           </div>
 
-          <h2 className="font-heading text-3xl font-bold text-[#401F48] drop-shadow-[0_8px_24px_rgba(255,255,255,0.45)] md:text-4xl lg:text-5xl animate-slide-up">
+          <h2 className="font-heading text-3xl font-bold text-white tracking-widest md:text-4xl lg:text-5xl xl:text-6xl animate-slide-up">
             Browse by Property Type
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-base font-medium leading-7 text-[#401F48]/74 drop-shadow-[0_1px_10px_rgba(255,255,255,0.42)] md:text-lg animate-fade-in">
-            Find the perfect property that suits your needs and lifestyle
-          </p>
+          <div className="mx-auto mt-6 flex items-center justify-center gap-4">
+            <div className="h-px w-20 bg-gradient-to-r from-transparent to-[#C9A96E]/40" />
+            <p className="text-xs font-light uppercase tracking-[0.18em] text-white/60 md:text-sm animate-fade-in">
+              Find the perfect property that suits your lifestyle
+            </p>
+            <div className="h-px w-20 bg-gradient-to-l from-transparent to-[#C9A96E]/40" />
+          </div>
         </div>
 
-        {/* Unique Compact Layout - Creative Asymmetric Design */}
+        {/* Cards Grid */}
         <div className="max-w-6xl mx-auto">
-          {/* Row 1: Apartments (large) + Houses (medium stacked) */}
+          {/* Row 1: Apartments (large) + Houses & Commercial (stacked) */}
           <div className="flex flex-col md:flex-row gap-4 mb-4">
-            {/* Apartments - Large Featured */}
+            {/* Apartments — Large Featured */}
             <Link
               href="/search?propertyType=apartment"
               data-testid="link-type-apartment"
-              className="group relative overflow-hidden rounded-2xl border border-[#E8CDD1]/70 bg-[#F5F0EA]/88 p-6 shadow-[0_20px_50px_rgba(64,31,72,0.16)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-[#401F48]/38 hover:bg-white/92 hover:shadow-[0_26px_64px_rgba(64,31,72,0.22)] md:w-1/2 animate-scale-in"
+              className="group relative overflow-hidden border border-[#C9A96E]/22 bg-white shadow-[0_8px_40px_rgba(180,140,80,0.12),0_2px_10px_rgba(64,31,72,0.06)] transition-all duration-500 hover:border-[#C9A96E]/60 hover:shadow-[0_0_50px_rgba(201,169,110,0.18),0_16px_48px_rgba(180,140,80,0.14)] md:w-1/2 animate-scale-in p-8"
             >
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#401F48]/38 to-transparent" />
-              <div className="flex items-center gap-4">
-                <div className="flex-shrink-0 rounded-2xl border border-[#E8CDD1] bg-[#401F48]/10 p-3 shadow-inner shadow-white/60 backdrop-blur-sm transition-all duration-500 group-hover:scale-110">
-                  <Building2
-                    className="w-10 h-10 text-[#401F48]"
-                    strokeWidth={1.5}
-                  />
+              {/* Top gold hairline */}
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C9A96E]/70 to-transparent" />
+              {/* Left accent bar grows on hover */}
+              <div className="absolute left-0 top-0 w-[2px] h-0 bg-gradient-to-b from-[#C9A96E] to-[#C9A96E]/25 transition-all duration-500 group-hover:h-full" />
+              {/* Corner brackets */}
+              <div className="absolute top-3.5 right-3.5 w-5 h-5 border-t border-r border-[#C9A96E]/30 group-hover:border-[#C9A96E]/75 transition-colors duration-400" />
+              <div className="absolute bottom-3.5 left-3.5 w-5 h-5 border-b border-l border-[#C9A96E]/30 group-hover:border-[#C9A96E]/75 transition-colors duration-400" />
+              {/* Watermark number */}
+              <div className="absolute -right-3 -top-5 text-[8rem] font-black leading-none select-none pointer-events-none text-[#C9A96E]/10">
+                01
+              </div>
+
+              <div className="relative flex items-center gap-6">
+                {/* Icon box with corner ticks */}
+                <div className="flex-shrink-0 relative">
+                  <div className="relative w-16 h-16 border border-[#C9A96E]/35 bg-[#FBF7F0] flex items-center justify-center group-hover:border-[#C9A96E]/75 group-hover:shadow-[0_0_22px_rgba(201,169,110,0.20)] transition-all duration-500">
+                    <Building2
+                      className="w-8 h-8 text-[#C9A96E]"
+                      strokeWidth={1.2}
+                    />
+                    <div className="absolute -top-px -left-px w-2.5 h-2.5 border-t border-l border-[#C9A96E]/60" />
+                    <div className="absolute -bottom-px -right-px w-2.5 h-2.5 border-b border-r border-[#C9A96E]/60" />
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-heading text-xl md:text-2xl font-bold text-[#401F48] mb-1">
+
+                <div className="flex-1 min-w-0">
+                  <p className="text-[9px] uppercase tracking-[0.35em] text-[#C9A96E] mb-1.5 font-semibold">
+                    Category 01
+                  </p>
+                  <h3 className="font-heading text-2xl md:text-3xl font-bold text-[#1C0F24] tracking-wide leading-tight">
                     Apartments
                   </h3>
-                  <p className="text-xs md:text-sm text-[#401F48]/72">
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-[#1C0F24]/42 mt-1.5 font-light">
                     Modern living spaces
                   </p>
                 </div>
-                <svg
-                  className="w-5 h-5 text-[#401F48]/50 group-hover:translate-x-1 group-hover:text-[#401F48] transition-all"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </div>
-            </Link>
 
-            {/* Houses & Commercial - Stacked */}
-            <div className="md:w-1/2 flex flex-col gap-4">
-              <Link
-                href="/search?propertyType=house"
-                data-testid="link-type-house"
-                className="group relative overflow-hidden rounded-2xl border border-[#E8CDD1]/70 bg-[#F5F0EA]/86 p-5 shadow-[0_16px_40px_rgba(64,31,72,0.14)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-[#401F48]/38 hover:bg-white/92 hover:shadow-[0_22px_54px_rgba(64,31,72,0.20)] animate-scale-in"
-                style={{ animationDelay: '100ms' }}
-              >
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#401F48]/30 to-transparent" />
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl border border-[#E8CDD1] bg-[#401F48]/10 backdrop-blur-sm group-hover:scale-110 transition-all duration-500 flex-shrink-0">
-                    <Home
-                      className="w-8 h-8 text-[#401F48]"
-                      strokeWidth={1.5}
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-heading text-lg font-bold text-[#401F48] mb-0.5">
-                      Houses
-                    </h3>
-                    <p className="text-xs text-[#401F48]/70">
-                      Family homes & estates
-                    </p>
-                  </div>
+                <div className="flex-shrink-0 w-9 h-9 border border-[#C9A96E]/32 rounded-full flex items-center justify-center group-hover:border-[#C9A96E]/70 group-hover:bg-[#C9A96E]/10 group-hover:shadow-[0_0_14px_rgba(201,169,110,0.22)] transition-all duration-400">
                   <svg
-                    className="w-4 h-4 text-[#401F48]/50 group-hover:translate-x-1 group-hover:text-[#401F48] transition-all"
+                    className="w-3.5 h-3.5 text-[#C9A96E]/60 group-hover:text-[#C9A96E] group-hover:translate-x-0.5 transition-all duration-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -122,44 +117,107 @@ export function PropertyTypeSection() {
                       d="M9 5l7 7-7 7"
                     />
                   </svg>
+                </div>
+              </div>
+            </Link>
+
+            {/* Houses & Commercial — Stacked */}
+            <div className="md:w-1/2 flex flex-col gap-4">
+              <Link
+                href="/search?propertyType=house"
+                data-testid="link-type-house"
+                className="group relative overflow-hidden border border-[#C9A96E]/22 bg-white p-6 shadow-[0_8px_30px_rgba(180,140,80,0.10),0_2px_8px_rgba(64,31,72,0.05)] transition-all duration-500 hover:border-[#C9A96E]/60 hover:shadow-[0_0_36px_rgba(201,169,110,0.16),0_12px_36px_rgba(180,140,80,0.12)] animate-scale-in"
+                style={{ animationDelay: '100ms' }}
+              >
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C9A96E]/60 to-transparent" />
+                <div className="absolute left-0 top-0 w-[2px] h-0 bg-gradient-to-b from-[#C9A96E] to-[#C9A96E]/25 transition-all duration-500 group-hover:h-full" />
+                <div className="absolute top-3 right-3 w-4 h-4 border-t border-r border-[#C9A96E]/30 group-hover:border-[#C9A96E]/68 transition-colors duration-400" />
+                <div className="absolute -right-2 -top-4 text-[5rem] font-black leading-none select-none pointer-events-none text-[#C9A96E]/10">
+                  02
+                </div>
+
+                <div className="relative flex items-center gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 border border-[#C9A96E]/32 bg-[#FBF7F0] flex items-center justify-center group-hover:border-[#C9A96E]/68 group-hover:shadow-[0_0_16px_rgba(201,169,110,0.18)] transition-all duration-500">
+                    <Home
+                      className="w-6 h-6 text-[#C9A96E]"
+                      strokeWidth={1.2}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[8px] uppercase tracking-[0.32em] text-[#C9A96E] mb-1 font-semibold">
+                      Category 02
+                    </p>
+                    <h3 className="font-heading text-lg font-bold text-[#1C0F24] tracking-wide">
+                      Houses
+                    </h3>
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#1C0F24]/40 mt-0.5 font-light">
+                      Family homes & estates
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0 w-7 h-7 border border-[#C9A96E]/28 rounded-full flex items-center justify-center group-hover:border-[#C9A96E]/65 group-hover:bg-[#C9A96E]/10 transition-all duration-400">
+                    <svg
+                      className="w-3 h-3 text-[#C9A96E]/55 group-hover:text-[#C9A96E] group-hover:translate-x-0.5 transition-all"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
                 </div>
               </Link>
 
               <Link
                 href="/search?propertyType=commercial"
                 data-testid="link-type-commercial"
-                className="group relative overflow-hidden rounded-2xl border border-[#E8CDD1]/70 bg-[#F5F0EA]/86 p-5 shadow-[0_16px_40px_rgba(64,31,72,0.14)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-[#401F48]/38 hover:bg-white/92 hover:shadow-[0_22px_54px_rgba(64,31,72,0.20)] animate-scale-in"
+                className="group relative overflow-hidden border border-[#C9A96E]/22 bg-white p-6 shadow-[0_8px_30px_rgba(180,140,80,0.10),0_2px_8px_rgba(64,31,72,0.05)] transition-all duration-500 hover:border-[#C9A96E]/60 hover:shadow-[0_0_36px_rgba(201,169,110,0.16),0_12px_36px_rgba(180,140,80,0.12)] animate-scale-in"
                 style={{ animationDelay: '200ms' }}
               >
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#401F48]/30 to-transparent" />
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl border border-[#E8CDD1] bg-[#401F48]/10 backdrop-blur-sm group-hover:scale-110 transition-all duration-500 flex-shrink-0">
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C9A96E]/60 to-transparent" />
+                <div className="absolute left-0 top-0 w-[2px] h-0 bg-gradient-to-b from-[#C9A96E] to-[#C9A96E]/25 transition-all duration-500 group-hover:h-full" />
+                <div className="absolute top-3 right-3 w-4 h-4 border-t border-r border-[#C9A96E]/30 group-hover:border-[#C9A96E]/68 transition-colors duration-400" />
+                <div className="absolute -right-2 -top-4 text-[5rem] font-black leading-none select-none pointer-events-none text-[#C9A96E]/10">
+                  03
+                </div>
+
+                <div className="relative flex items-center gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 border border-[#C9A96E]/32 bg-[#FBF7F0] flex items-center justify-center group-hover:border-[#C9A96E]/68 group-hover:shadow-[0_0_16px_rgba(201,169,110,0.18)] transition-all duration-500">
                     <Briefcase
-                      className="w-8 h-8 text-[#401F48]"
-                      strokeWidth={1.5}
+                      className="w-6 h-6 text-[#C9A96E]"
+                      strokeWidth={1.2}
                     />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-heading text-lg font-bold text-[#401F48] mb-0.5">
+                    <p className="text-[8px] uppercase tracking-[0.32em] text-[#C9A96E] mb-1 font-semibold">
+                      Category 03
+                    </p>
+                    <h3 className="font-heading text-lg font-bold text-[#1C0F24] tracking-wide">
                       Commercial
                     </h3>
-                    <p className="text-xs text-[#401F48]/70">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#1C0F24]/40 mt-0.5 font-light">
                       Office & business spaces
                     </p>
                   </div>
-                  <svg
-                    className="w-4 h-4 text-[#401F48]/50 group-hover:translate-x-1 group-hover:text-[#401F48] transition-all"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
+                  <div className="flex-shrink-0 w-7 h-7 border border-[#C9A96E]/28 rounded-full flex items-center justify-center group-hover:border-[#C9A96E]/65 group-hover:bg-[#C9A96E]/10 transition-all duration-400">
+                    <svg
+                      className="w-3 h-3 text-[#C9A96E]/55 group-hover:text-[#C9A96E] group-hover:translate-x-0.5 transition-all"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
                 </div>
               </Link>
             </div>
@@ -170,22 +228,34 @@ export function PropertyTypeSection() {
             <Link
               href="/search?propertyType=flat"
               data-testid="link-type-flat"
-              className="group relative overflow-hidden rounded-2xl border border-[#E8CDD1]/70 bg-[#F5F0EA]/86 p-5 shadow-[0_16px_40px_rgba(64,31,72,0.14)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-[#401F48]/38 hover:bg-white/92 hover:shadow-[0_22px_54px_rgba(64,31,72,0.20)] animate-scale-in"
+              className="group relative overflow-hidden border border-[#C9A96E]/22 bg-white p-6 shadow-[0_8px_30px_rgba(180,140,80,0.10),0_2px_8px_rgba(64,31,72,0.05)] transition-all duration-500 hover:border-[#C9A96E]/60 hover:shadow-[0_0_36px_rgba(201,169,110,0.16),0_12px_36px_rgba(180,140,80,0.12)] animate-scale-in"
               style={{ animationDelay: '300ms' }}
             >
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#401F48]/30 to-transparent" />
-              <div className="text-center space-y-3">
-                <div className="inline-flex p-3 rounded-2xl border border-[#E8CDD1] bg-[#401F48]/10 backdrop-blur-sm group-hover:scale-110 transition-all duration-500">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C9A96E]/60 to-transparent" />
+              <div className="absolute top-0 left-0 w-0 h-[2px] bg-gradient-to-r from-[#C9A96E] to-[#C9A96E]/25 transition-all duration-500 group-hover:w-full" />
+              <div className="absolute top-3 right-3 w-4 h-4 border-t border-r border-[#C9A96E]/30 group-hover:border-[#C9A96E]/68 transition-colors duration-400" />
+              <div className="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-[#C9A96E]/30 group-hover:border-[#C9A96E]/68 transition-colors duration-400" />
+              <div className="absolute -right-1 -top-3 text-[4rem] font-black leading-none select-none pointer-events-none text-[#C9A96E]/10">
+                04
+              </div>
+
+              <div className="relative text-center space-y-4">
+                <div className="inline-flex w-14 h-14 border border-[#C9A96E]/32 bg-[#FBF7F0] items-center justify-center group-hover:border-[#C9A96E]/68 group-hover:shadow-[0_0_20px_rgba(201,169,110,0.20)] transition-all duration-500">
                   <Building
-                    className="w-8 h-8 text-[#401F48]"
-                    strokeWidth={1.5}
+                    className="w-7 h-7 text-[#C9A96E]"
+                    strokeWidth={1.2}
                   />
                 </div>
                 <div>
-                  <h3 className="font-heading text-lg font-bold text-[#401F48] mb-1">
+                  <p className="text-[8px] uppercase tracking-[0.32em] text-[#C9A96E] mb-1.5 font-semibold">
+                    Category 04
+                  </p>
+                  <h3 className="font-heading text-base font-bold text-[#1C0F24] tracking-wide">
                     Flats
                   </h3>
-                  <p className="text-xs text-[#401F48]/70">Affordable living</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#1C0F24]/40 mt-1 font-light">
+                    Affordable living
+                  </p>
                 </div>
               </div>
             </Link>
@@ -193,22 +263,34 @@ export function PropertyTypeSection() {
             <Link
               href="/search?propertyType=land"
               data-testid="link-type-land"
-              className="group relative overflow-hidden rounded-2xl border border-[#E8CDD1]/70 bg-[#F5F0EA]/86 p-5 shadow-[0_16px_40px_rgba(64,31,72,0.14)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-[#401F48]/38 hover:bg-white/92 hover:shadow-[0_22px_54px_rgba(64,31,72,0.20)] animate-scale-in"
+              className="group relative overflow-hidden border border-[#C9A96E]/22 bg-white p-6 shadow-[0_8px_30px_rgba(180,140,80,0.10),0_2px_8px_rgba(64,31,72,0.05)] transition-all duration-500 hover:border-[#C9A96E]/60 hover:shadow-[0_0_36px_rgba(201,169,110,0.16),0_12px_36px_rgba(180,140,80,0.12)] animate-scale-in"
               style={{ animationDelay: '400ms' }}
             >
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#401F48]/30 to-transparent" />
-              <div className="text-center space-y-3">
-                <div className="inline-flex p-3 rounded-2xl border border-[#E8CDD1] bg-[#401F48]/10 backdrop-blur-sm group-hover:scale-110 transition-all duration-500">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C9A96E]/60 to-transparent" />
+              <div className="absolute top-0 left-0 w-0 h-[2px] bg-gradient-to-r from-[#C9A96E] to-[#C9A96E]/25 transition-all duration-500 group-hover:w-full" />
+              <div className="absolute top-3 right-3 w-4 h-4 border-t border-r border-[#C9A96E]/30 group-hover:border-[#C9A96E]/68 transition-colors duration-400" />
+              <div className="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-[#C9A96E]/30 group-hover:border-[#C9A96E]/68 transition-colors duration-400" />
+              <div className="absolute -right-1 -top-3 text-[4rem] font-black leading-none select-none pointer-events-none text-[#C9A96E]/10">
+                05
+              </div>
+
+              <div className="relative text-center space-y-4">
+                <div className="inline-flex w-14 h-14 border border-[#C9A96E]/32 bg-[#FBF7F0] items-center justify-center group-hover:border-[#C9A96E]/68 group-hover:shadow-[0_0_20px_rgba(201,169,110,0.20)] transition-all duration-500">
                   <MapPin
-                    className="w-8 h-8 text-[#401F48]"
-                    strokeWidth={1.5}
+                    className="w-7 h-7 text-[#C9A96E]"
+                    strokeWidth={1.2}
                   />
                 </div>
                 <div>
-                  <h3 className="font-heading text-lg font-bold text-[#401F48] mb-1">
+                  <p className="text-[8px] uppercase tracking-[0.32em] text-[#C9A96E] mb-1.5 font-semibold">
+                    Category 05
+                  </p>
+                  <h3 className="font-heading text-base font-bold text-[#1C0F24] tracking-wide">
                     Land
                   </h3>
-                  <p className="text-xs text-[#401F48]/70">Build your dream</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#1C0F24]/40 mt-1 font-light">
+                    Build your dream
+                  </p>
                 </div>
               </div>
             </Link>
@@ -216,19 +298,31 @@ export function PropertyTypeSection() {
             <Link
               href="/search?propertyType=shop"
               data-testid="link-type-shop"
-              className="group relative col-span-2 overflow-hidden rounded-2xl border border-[#E8CDD1]/70 bg-[#F5F0EA]/86 p-5 shadow-[0_16px_40px_rgba(64,31,72,0.14)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-[#401F48]/38 hover:bg-white/92 hover:shadow-[0_22px_54px_rgba(64,31,72,0.20)] md:col-span-1 animate-scale-in"
+              className="group relative col-span-2 overflow-hidden border border-[#C9A96E]/22 bg-white p-6 shadow-[0_8px_30px_rgba(180,140,80,0.10),0_2px_8px_rgba(64,31,72,0.05)] transition-all duration-500 hover:border-[#C9A96E]/60 hover:shadow-[0_0_36px_rgba(201,169,110,0.16),0_12px_36px_rgba(180,140,80,0.12)] md:col-span-1 animate-scale-in"
               style={{ animationDelay: '500ms' }}
             >
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#401F48]/30 to-transparent" />
-              <div className="text-center space-y-3">
-                <div className="inline-flex p-3 rounded-2xl border border-[#E8CDD1] bg-[#401F48]/10 backdrop-blur-sm group-hover:scale-110 transition-all duration-500">
-                  <Store className="w-8 h-8 text-[#401F48]" strokeWidth={1.5} />
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C9A96E]/60 to-transparent" />
+              <div className="absolute top-0 left-0 w-0 h-[2px] bg-gradient-to-r from-[#C9A96E] to-[#C9A96E]/25 transition-all duration-500 group-hover:w-full" />
+              <div className="absolute top-3 right-3 w-4 h-4 border-t border-r border-[#C9A96E]/30 group-hover:border-[#C9A96E]/68 transition-colors duration-400" />
+              <div className="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-[#C9A96E]/30 group-hover:border-[#C9A96E]/68 transition-colors duration-400" />
+              <div className="absolute -right-1 -top-3 text-[4rem] font-black leading-none select-none pointer-events-none text-[#C9A96E]/10">
+                06
+              </div>
+
+              <div className="relative text-center space-y-4">
+                <div className="inline-flex w-14 h-14 border border-[#C9A96E]/32 bg-[#FBF7F0] items-center justify-center group-hover:border-[#C9A96E]/68 group-hover:shadow-[0_0_20px_rgba(201,169,110,0.20)] transition-all duration-500">
+                  <Store className="w-7 h-7 text-[#C9A96E]" strokeWidth={1.2} />
                 </div>
                 <div>
-                  <h3 className="font-heading text-lg font-bold text-[#401F48] mb-1">
+                  <p className="text-[8px] uppercase tracking-[0.32em] text-[#C9A96E] mb-1.5 font-semibold">
+                    Category 06
+                  </p>
+                  <h3 className="font-heading text-base font-bold text-[#1C0F24] tracking-wide">
                     Shops
                   </h3>
-                  <p className="text-xs text-[#401F48]/70">Retail spaces</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#1C0F24]/40 mt-1 font-light">
+                    Retail spaces
+                  </p>
                 </div>
               </div>
             </Link>
@@ -237,13 +331,15 @@ export function PropertyTypeSection() {
 
         {/* Bottom decorative text */}
         <div
-          className="mt-12 text-center animate-fade-in"
+          className="mt-14 text-center animate-fade-in"
           style={{ animationDelay: '600ms' }}
         >
-          <div className="inline-flex items-center gap-3 rounded-full border border-[#E8CDD1]/70 bg-[#F5F0EA]/80 px-6 py-3 text-sm font-medium text-[#401F48]/72 shadow-[0_14px_36px_rgba(64,31,72,0.14)] backdrop-blur-md">
-            <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#401F48]/50 to-[#401F48]/20" />
-            <span>Click any category to explore listings</span>
-            <div className="w-12 h-px bg-gradient-to-l from-transparent via-[#401F48]/50 to-[#401F48]/20" />
+          <div className="inline-flex items-center gap-5">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#C9A96E]/55" />
+            <span className="text-[10px] uppercase tracking-[0.32em] text-white/45 font-light">
+              Click any category to explore listings
+            </span>
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#C9A96E]/55" />
           </div>
         </div>
       </div>
