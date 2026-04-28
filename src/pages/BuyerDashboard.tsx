@@ -1,18 +1,22 @@
-import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { Link, useLocation } from 'wouter';
 import {
   Heart,
   MessageSquare,
   Calendar,
   Scale,
-  Home,
   Search,
   ChevronRight,
   Bell,
-  Building2,
-  Eye
+  Eye,
+  Send,
+  Loader2,
+  User,
+  ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Card,
   CardContent,
@@ -26,12 +30,21 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ListingCard, ListingCardSkeleton } from '@/components/ListingCard';
 import { useAuth } from '@/lib/auth';
-import type { Listing, PropertyInquiryWithDetails } from '@/types/schema';
+import { useToast } from '@/hooks/use-toast';
+import { queryClient } from '@/lib/queryClient';
+import type {
+  Listing,
+  PropertyInquiryWithDetails,
+  InquiryMessage,
+} from '@/types/schema';
 import { API_URL } from '@/lib/api';
+import { formatDate } from '@/lib/format';
 
 export default function BuyerDashboard() {
   const { user, isLoading: authLoading } = useAuth();
+  const { toast } = useToast();
   const [location, setLocation] = useLocation();
+  const [replyText, setReplyText] = useState<Record<string, string>>({});
 
   // Fetch buyer stats
   const { data: stats, isLoading: statsLoading } = useQuery({
@@ -63,7 +76,7 @@ export default function BuyerDashboard() {
     enabled: !!user,
   });
 
-  // Fetch inquiries
+  // Fetch inquiries — poll every 30s so new admin messages appear without a manual refresh
   const { data: inquiries, isLoading: inquiriesLoading } = useQuery<{
     data: PropertyInquiryWithDetails[];
   }>({
@@ -77,10 +90,12 @@ export default function BuyerDashboard() {
       return response.json();
     },
     enabled: !!user,
+    refetchInterval: 30000,
+    staleTime: 0,
   });
 
   // Fetch comparison cart
-  const { data: comparisonCart, isLoading: cartLoading } = useQuery({
+  const { data: comparisonCart } = useQuery({
     queryKey: ['/api/comparison-cart'],
     queryFn: async () => {
       const token = localStorage.getItem('accessToken');
@@ -91,6 +106,39 @@ export default function BuyerDashboard() {
       return response.json();
     },
     enabled: !!user,
+  });
+
+  const sendReply = useMutation({
+    mutationFn: async ({ id, reply }: { id: string; reply: string }) => {
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch(
+        `${API_URL}/api/property-inquiries/${id}/buyer-reply`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ reply }),
+        },
+      );
+      if (!response.ok) throw new Error('Failed to send reply');
+      return response.json();
+    },
+    onSuccess: (_data, variables) => {
+      toast({
+        title: 'Reply sent!',
+        description: 'Your message has been sent to the admin.',
+      });
+      setReplyText(prev => ({ ...prev, [variables.id]: '' }));
+      queryClient.invalidateQueries({
+        queryKey: ['/api/property-inquiries'],
+        exact: false,
+      });
+    },
+    onError: () => {
+      toast({ title: 'Failed to send reply', variant: 'destructive' });
+    },
   });
 
   if (!user && !authLoading) {
@@ -129,6 +177,38 @@ export default function BuyerDashboard() {
     },
   ];
 
+  // Build the visible conversation thread for an inquiry.
+  // Prefer the messages[] array; fall back to adminReply for older records.
+  function buildThread(inquiry: PropertyInquiryWithDetails): InquiryMessage[] {
+    if (inquiry.messages && inquiry.messages.length > 0) {
+      return inquiry.messages;
+    }
+    // backwards-compat: no messages array yet but adminReply exists
+    if (inquiry.adminReply) {
+      return [
+        {
+          senderRole: 'admin',
+          text: inquiry.adminReply,
+          sentAt: inquiry.adminReplyAt || inquiry.updatedAt || '',
+        },
+      ];
+    }
+    return [];
+  }
+
+  function hasAdminReplied(inquiry: PropertyInquiryWithDetails): boolean {
+    const thread = buildThread(inquiry);
+    if (thread.length === 0) return false;
+    // allow reply if ANY admin message exists (buyer can reply to the latest)
+    return thread.some(m => m.senderRole === 'admin');
+  }
+
+  function lastMessageIsAdmin(inquiry: PropertyInquiryWithDetails): boolean {
+    const thread = buildThread(inquiry);
+    if (thread.length === 0) return false;
+    return thread[thread.length - 1].senderRole === 'admin';
+  }
+
   return (
     <div className="bg-muted/30 py-8">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
@@ -158,9 +238,9 @@ export default function BuyerDashboard() {
                 Browse Properties
               </Button>
             </Link>
-            <Button variant="outline" size="icon">
+            {/* <Button variant="outline" size="icon">
               <Bell className="h-4 w-4" />
-            </Button>
+            </Button> */}
           </div>
         </div>
 
@@ -174,7 +254,7 @@ export default function BuyerDashboard() {
                   </CardContent>
                 </Card>
               ))
-            : statCards.map((stat) => {
+            : statCards.map(stat => {
                 const Icon = stat.icon;
                 return (
                   <Card
@@ -182,7 +262,9 @@ export default function BuyerDashboard() {
                     className="cursor-pointer hover:shadow-md transition-shadow"
                     onClick={() =>
                       stat.href.startsWith('#')
-                        ? document.querySelector(stat.href)?.scrollIntoView({ behavior: 'smooth' })
+                        ? document
+                            .querySelector(stat.href)
+                            ?.scrollIntoView({ behavior: 'smooth' })
                         : setLocation(stat.href)
                     }
                   >
@@ -196,7 +278,9 @@ export default function BuyerDashboard() {
                             {stat.value}
                           </p>
                         </div>
-                        <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 ${stat.color}`}>
+                        <div
+                          className={`flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 ${stat.color}`}
+                        >
                           <Icon className="h-6 w-6" />
                         </div>
                       </div>
@@ -237,7 +321,7 @@ export default function BuyerDashboard() {
                   </div>
                 ) : favorites?.data && favorites.data.length > 0 ? (
                   <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {favorites.data.map((listing) => (
+                    {favorites.data.map(listing => (
                       <ListingCard
                         key={listing.id}
                         listing={listing}
@@ -246,7 +330,7 @@ export default function BuyerDashboard() {
                     ))}
                   </div>
                 ) : (
-                  <div className="py-12 text-center">
+                  <div className="py-12 text-center ">
                     <Heart className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
                     <h3 className="font-heading font-semibold mb-2">
                       No favorites yet
@@ -256,8 +340,7 @@ export default function BuyerDashboard() {
                     </p>
                     <Link href="/search">
                       <Button variant="outline" className="gap-2">
-                        Browse Properties
-                        <ChevronRight className="h-4 w-4" />
+                        Browse Properties <ChevronRight className="h-4 w-4" />
                       </Button>
                     </Link>
                   </div>
@@ -272,7 +355,7 @@ export default function BuyerDashboard() {
               <CardHeader>
                 <CardTitle>My Inquiries</CardTitle>
                 <CardDescription>
-                  View and track your property inquiries
+                  Track your inquiries and communicate with the admin
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -284,15 +367,20 @@ export default function BuyerDashboard() {
                   </div>
                 ) : inquiries?.data && inquiries.data.length > 0 ? (
                   <div className="space-y-4">
-                    {inquiries.data.map((inquiry) => (
-                      <div
-                        key={inquiry.id}
-                        className="border rounded-lg p-4 hover:bg-muted/50 transition-colors"
-                      >
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex gap-4 flex-1">
+                    {inquiries.data.map(inquiry => {
+                      const thread = buildThread(inquiry);
+                      const canReply = lastMessageIsAdmin(inquiry);
+                      const replyValue = replyText[inquiry.id] ?? '';
+
+                      return (
+                        <div
+                          key={inquiry.id}
+                          className="border rounded-lg overflow-hidden"
+                        >
+                          {/* Property + status row */}
+                          <div className="flex items-start gap-4 p-4">
                             {inquiry.property?.images?.[0] && (
-                              <div className="w-24 h-20 rounded-md overflow-hidden flex-shrink-0">
+                              <div className="w-20 h-16 rounded-md overflow-hidden flex-shrink-0">
                                 <img
                                   src={inquiry.property.images[0]}
                                   alt={inquiry.property.title}
@@ -307,7 +395,7 @@ export default function BuyerDashboard() {
                               <p className="text-sm text-muted-foreground">
                                 {inquiry.property?.city}
                               </p>
-                              <div className="flex items-center gap-2 mt-2">
+                              <div className="flex items-center gap-2 mt-2 flex-wrap">
                                 <Badge variant="outline" className="capitalize">
                                   {inquiry.requestType}
                                 </Badge>
@@ -316,30 +404,139 @@ export default function BuyerDashboard() {
                                     inquiry.status === 'new'
                                       ? 'default'
                                       : inquiry.status === 'contacted'
-                                      ? 'secondary'
-                                      : 'outline'
+                                        ? 'secondary'
+                                        : 'outline'
                                   }
                                   className="capitalize"
                                 >
                                   {inquiry.status}
                                 </Badge>
+                                {hasAdminReplied(inquiry) && (
+                                  <Badge className="bg-green-600 hover:bg-green-600 gap-1">
+                                    <MessageSquare className="h-3 w-3" />
+                                    Admin replied
+                                  </Badge>
+                                )}
                               </div>
                             </div>
+                            <Link
+                              href={`/properties/${inquiry.property?.slug}`}
+                            >
+                              <Button variant="ghost" size="sm">
+                                <Eye className="h-4 w-4 mr-1" />
+                                View
+                              </Button>
+                            </Link>
                           </div>
-                          <Link href={`/properties/${inquiry.property?.slug}`}>
-                            <Button variant="ghost" size="sm">
-                              <Eye className="h-4 w-4 mr-1" />
-                              View
-                            </Button>
-                          </Link>
+
+                          {/* Initial inquiry message */}
+                          {inquiry.message && (
+                            <div className="px-4 pb-3 border-t pt-3">
+                              <p className="text-xs text-muted-foreground font-medium mb-1">
+                                Your initial message
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                {inquiry.message}
+                              </p>
+                            </div>
+                          )}
+
+                          {/* Conversation thread */}
+                          {thread.length > 0 && (
+                            <div className="border-t">
+                              <div className="px-4 py-2 bg-muted/40">
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                                  Conversation
+                                </p>
+                              </div>
+                              <div className="divide-y">
+                                {thread.map((msg, idx) => (
+                                  <div
+                                    key={idx}
+                                    className={`px-4 py-3 flex gap-3 ${
+                                      msg.senderRole === 'admin'
+                                        ? 'bg-blue-50 dark:bg-blue-950/20'
+                                        : 'bg-background'
+                                    }`}
+                                  >
+                                    <div
+                                      className={`flex-shrink-0 h-7 w-7 rounded-full flex items-center justify-center text-white text-xs ${
+                                        msg.senderRole === 'admin'
+                                          ? 'bg-blue-600'
+                                          : 'bg-primary'
+                                      }`}
+                                    >
+                                      {msg.senderRole === 'admin' ? (
+                                        <ShieldCheck className="h-3.5 w-3.5" />
+                                      ) : (
+                                        <User className="h-3.5 w-3.5" />
+                                      )}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-xs font-semibold capitalize">
+                                          {msg.senderRole === 'admin'
+                                            ? 'Admin'
+                                            : 'You'}
+                                        </span>
+                                        {msg.sentAt && (
+                                          <span className="text-xs text-muted-foreground">
+                                            {formatDate(msg.sentAt as any)}
+                                          </span>
+                                        )}
+                                      </div>
+                                      <p className="text-sm whitespace-pre-wrap">
+                                        {msg.text}
+                                      </p>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Buyer reply form — shown when the last message is from admin */}
+                          {canReply && (
+                            <div className="border-t px-4 py-3 bg-muted/20">
+                              <p className="text-xs font-semibold text-muted-foreground mb-2">
+                                Reply to Admin
+                              </p>
+                              <Textarea
+                                placeholder="Write your reply..."
+                                value={replyValue}
+                                onChange={e =>
+                                  setReplyText(prev => ({
+                                    ...prev,
+                                    [inquiry.id]: e.target.value,
+                                  }))
+                                }
+                                className="min-h-[72px] resize-none mb-2 text-sm"
+                              />
+                              <Button
+                                size="sm"
+                                className="gap-2"
+                                disabled={
+                                  !replyValue.trim() || sendReply.isPending
+                                }
+                                onClick={() =>
+                                  sendReply.mutate({
+                                    id: inquiry.id,
+                                    reply: replyValue,
+                                  })
+                                }
+                              >
+                                {sendReply.isPending ? (
+                                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                ) : (
+                                  <Send className="h-3.5 w-3.5" />
+                                )}
+                                Send Reply
+                              </Button>
+                            </div>
+                          )}
                         </div>
-                        {inquiry.message && (
-                          <p className="text-sm text-muted-foreground mt-3 pl-28">
-                            {inquiry.message}
-                          </p>
-                        )}
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="py-12 text-center">
@@ -352,8 +549,7 @@ export default function BuyerDashboard() {
                     </p>
                     <Link href="/search">
                       <Button variant="outline" className="gap-2">
-                        Browse Properties
-                        <ChevronRight className="h-4 w-4" />
+                        Browse Properties <ChevronRight className="h-4 w-4" />
                       </Button>
                     </Link>
                   </div>
@@ -364,11 +560,9 @@ export default function BuyerDashboard() {
         </Tabs>
 
         {/* Quick Actions */}
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <Card>
-            <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-            </CardHeader>
+            <CardHeader><CardTitle>Quick Actions</CardTitle></CardHeader>
             <CardContent className="grid gap-3 sm:grid-cols-2">
               {[
                 { href: '/search', icon: Search, label: 'Browse All Properties' },
@@ -379,10 +573,7 @@ export default function BuyerDashboard() {
                 const Icon = action.icon;
                 return (
                   <Link key={action.href} href={action.href}>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-between"
-                    >
+                    <Button variant="outline" className="w-full justify-between">
                       <span className="flex items-center gap-2">
                         <Icon className="h-4 w-4" />
                         {action.label}
@@ -394,7 +585,7 @@ export default function BuyerDashboard() {
               })}
             </CardContent>
           </Card>
-        </div>
+        </div> */}
       </div>
     </div>
   );

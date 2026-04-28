@@ -382,6 +382,12 @@ export type InquiryType = typeof inquiryTypes[number];
 export const inquiryStatuses = ["new", "contacted", "closed"] as const;
 export type InquiryStatus = typeof inquiryStatuses[number];
 
+export interface InquiryMessage {
+  senderRole: 'admin' | 'buyer';
+  text: string;
+  sentAt: Date | string;
+}
+
 export interface PropertyInquiry {
   id: string;
   requestType: InquiryType;
@@ -390,10 +396,13 @@ export interface PropertyInquiry {
   message?: string | null;
   status: InquiryStatus;
   metadata?: {
-    preferredDate?: Date;
+    preferredDate?: Date | string;
     preferredTime?: string;
     contactPhone?: string;
   } | null;
+  adminReply?: string | null;
+  adminReplyAt?: Date | string | null;
+  messages?: InquiryMessage[] | null;
   createdAt?: Date | null;
   updatedAt?: Date | null;
 }
@@ -409,6 +418,39 @@ export interface InsertPropertyInquiry {
     preferredTime?: string;
     contactPhone?: string;
   };
+}
+
+// ==================== ADMIN → SELLER MESSAGES ====================
+export interface AdminSellerMessageThread {
+  senderRole: 'admin' | 'seller';
+  senderId: string;
+  text: string;
+  sentAt: Date | string;
+}
+
+export interface AdminSellerMessage {
+  id: string;
+  adminId: string;
+  sellerId: string;
+  propertyId: string;
+  message: string;
+  relatedInquiryId?: string | null;
+  read: boolean;
+  createdAt?: Date | string | null;
+  thread?: AdminSellerMessageThread[];
+}
+
+export interface AdminSellerMessageWithDetails extends AdminSellerMessage {
+  property?: Listing;
+  seller?: SafeUser;
+}
+
+export interface SellerFullProfile extends SafeUser {
+  totalListings: number;
+  activeListings: number;
+  totalInquiries: number;
+  unreadMessages: number;
+  listings: Array<Listing & { inquiryCount: number }>;
 }
 
 // ==================== COMPARISON CART ====================

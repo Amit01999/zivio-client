@@ -10,8 +10,8 @@ export default function CategoryNav() {
         <svg viewBox="0 0 120 120" className="w-20 h-20">
           <path
             d="M 60 25 L 85 45 L 85 80 L 35 80 L 35 45 Z"
-            fill="#75577A"
-            stroke="#75577A"
+            fill="#401F48"
+            stroke="#401F48"
             strokeWidth="2"
           />
           <rect x="50" y="60" width="20" height="20" fill="#FFF" rx="1" />
@@ -20,7 +20,7 @@ export default function CategoryNav() {
             cy="95"
             rx="30"
             ry="8"
-            fill="#75577A"
+            fill="#401F48"
             opacity="0.25"
           />
         </svg>
@@ -40,7 +40,7 @@ export default function CategoryNav() {
           xmlns="http://www.w3.org/2000/svg"
         >
           {/* Building */}
-          <rect x="38" y="30" width="44" height="50" rx="4" fill="#75577A" />
+          <rect x="38" y="30" width="44" height="50" rx="4" fill="#401F48" />
           {/* Windows */}
           <rect x="45" y="38" width="8" height="10" fill="#FFF" />
           <rect x="59" y="38" width="8" height="10" fill="#FFF" />
@@ -51,9 +51,9 @@ export default function CategoryNav() {
           <rect x="55" y="65" width="10" height="15" fill="#FFF" rx="1" />
 
           {/* Key (subtle, professional) */}
-          <circle cx="76" cy="78" r="4" fill="#75577A" />
-          <rect x="78" y="77" width="12" height="2" fill="#75577A" />
-          <rect x="86" y="75" width="2" height="4" fill="#75577A" />
+          <circle cx="76" cy="78" r="4" fill="#401F48" />
+          <rect x="78" y="77" width="12" height="2" fill="#401F48" />
+          <rect x="86" y="75" width="2" height="4" fill="#401F48" />
         </svg>
       ),
     },
@@ -67,13 +67,13 @@ export default function CategoryNav() {
         <svg viewBox="0 0 120 120" className="w-20 h-20">
           <path
             d="M 60 30 L 80 45 L 80 70 L 40 70 L 40 45 Z"
-            fill="#75577A"
-            stroke="#75577A"
+            fill="#401F48"
+            stroke="#401F48"
             strokeWidth="2"
           />
           <path
             d="M 30 85 L 90 85 L 90 95 L 30 95 Z"
-            fill="#75577A"
+            fill="#401F48"
             opacity="0.6"
           />
         </svg>
@@ -86,7 +86,7 @@ export default function CategoryNav() {
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-20">
-          <span className="inline-block text-sm font-semibold tracking-wider text-[#75577A] dark:text-[#A88AAD] uppercase mb-4">
+          <span className="inline-block text-sm font-semibold tracking-wider text-[#401F48] dark:text-[#654B6B] uppercase mb-4">
             Our Services
           </span>
           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight">
@@ -110,7 +110,7 @@ export default function CategoryNav() {
                 border
                 ${
                   service.featured
-                    ? 'border-[#75577A] dark:border-[#A88AAD] shadow-2xl scale-[1.03]'
+                    ? 'border-[#401F48] dark:border-[#654B6B] shadow-2xl scale-[1.03]'
                     : 'border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl'
                 }
                 hover:-translate-y-2
@@ -119,12 +119,12 @@ export default function CategoryNav() {
               {/* Glow */}
               <div
                 className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition duration-500
-                bg-gradient-to-br from-[#75577A]/20 dark:from-[#A88AAD]/20 via-transparent to-transparent blur-2xl"
+                bg-gradient-to-br from-[#401F48]/20 dark:from-[#654B6B]/20 via-transparent to-transparent blur-2xl"
               />
 
               {/* Icon */}
               <div className="relative z-10 flex justify-center mb-8">
-                <div className="w-24 h-24 flex items-center justify-center rounded-full bg-gradient-to-br from-[#F1E6EA] dark:from-[#75577A]/40 to-[#E1CBD4] dark:to-[#A88AAD]/40 shadow-inner">
+                <div className="w-24 h-24 flex items-center justify-center rounded-full bg-gradient-to-br from-[#F1E6EA] dark:from-[#401F48]/40 to-[#E1CBD4] dark:to-[#654B6B]/40 shadow-inner">
                   {service.illustration}
                 </div>
               </div>
@@ -145,8 +145,8 @@ export default function CategoryNav() {
                     inline-flex items-center gap-2 font-semibold text-sm
                     ${
                       service.featured
-                        ? 'text-white bg-[#75577A] dark:bg-[#8B6C90] px-6 py-3 rounded-full hover:bg-[#5E4663] dark:hover:bg-[#A88AAD]'
-                        : 'text-[#75577A] dark:text-[#A88AAD] hover:gap-3'
+                        ? 'text-white bg-[#401F48] dark:bg-[#401F48] px-6 py-3 rounded-full hover:bg-[#2D1235] dark:hover:bg-[#2D1235]'
+                        : 'text-[#401F48] dark:text-[#654B6B] hover:gap-3'
                     }
                     transition-all duration-300
                   `}

@@ -11,6 +11,7 @@ import RecentProperties from '@/components/ui/recentproperties';
 import Testimonial from '@/components/Testimonial';
 import CTAHome from '@/components/CTAHome';
 import WhyWithUs from '@/components/WhyWithUs';
+import WhatsAppChatButton from '@/components/WhatsAppChatButton';
 
 export default function Home() {
   return (
@@ -29,6 +30,7 @@ export default function Home() {
           <Testimonial />
         </div>
       </div>
+      <WhatsAppChatButton />
     </div>
   );
 }

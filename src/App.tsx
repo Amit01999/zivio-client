@@ -22,29 +22,32 @@ import CreateListing from "@/pages/CreateListing";
 import Agents from "@/pages/Agents";
 import Messages from "@/pages/Messages";
 import Admin from "@/pages/Admin";
+import ForgotPassword from "@/pages/ForgotPassword";
 import NotFound from "@/pages/not-found";
 
-function Router() {
+function MainRouter() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/search" component={Search} />
-      <Route path="/property/:slug" component={PropertyDetail} />
-      <Route path="/properties/:slug" component={PropertyDetail} />
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-      <Route path="/dashboard" component={DashboardRouter} />
-      <Route path="/dashboard/buyer" component={BuyerDashboard} />
-      <Route path="/dashboard/seller" component={SellerDashboard} />
-      <Route path="/dashboard/broker" component={BrokerDashboard} />
-      <Route path="/comparison" component={ComparisonPage} />
-      <Route path="/listings/new" component={CreateListing} />
-      <Route path="/agents" component={Agents} />
-      <Route path="/messages" component={Messages} />
-      <Route path="/admin" component={Admin} />
-      <Route path="/favorites" component={BuyerDashboard} />
-      <Route component={NotFound} />
-    </Switch>
+    <Layout>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/search" component={Search} />
+        <Route path="/property/:slug" component={PropertyDetail} />
+        <Route path="/properties/:slug" component={PropertyDetail} />
+        <Route path="/login" component={Login} />
+        <Route path="/forgot-password" component={ForgotPassword} />
+        <Route path="/register" component={Register} />
+        <Route path="/dashboard" component={DashboardRouter} />
+        <Route path="/dashboard/buyer" component={BuyerDashboard} />
+        <Route path="/dashboard/seller" component={SellerDashboard} />
+        <Route path="/dashboard/broker" component={BrokerDashboard} />
+        <Route path="/comparison" component={ComparisonPage} />
+        <Route path="/listings/new" component={CreateListing} />
+        <Route path="/agents" component={Agents} />
+        <Route path="/messages" component={Messages} />
+        <Route path="/favorites" component={BuyerDashboard} />
+        <Route component={NotFound} />
+      </Switch>
+    </Layout>
   );
 }
 
@@ -54,9 +57,12 @@ function App() {
       <ThemeProvider>
         <AuthProvider>
           <TooltipProvider>
-            <Layout>
-              <Router />
-            </Layout>
+            <Switch>
+              {/* Admin panel renders its own full-screen layout — no Navbar/Footer */}
+              <Route path="/admin" component={Admin} />
+              {/* All other routes get the public Layout (Navbar + Footer) */}
+              <Route component={MainRouter} />
+            </Switch>
             <Toaster />
           </TooltipProvider>
         </AuthProvider>

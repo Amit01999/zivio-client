@@ -4,28 +4,28 @@ import { Star, Quote } from 'lucide-react';
 
 export default function Testimonial() {
   return (
-    <section className="relative py-20 md:py-24 overflow-hidden bg-gradient-to-br from-primary-soft via-accent-light to-primary-soft/50">
+    <section className="relative py-20 md:py-24 overflow-hidden bg-gradient-to-br from-primary-soft via-accent-light to-primary-soft/50 dark:from-[#0B0610] dark:via-[#17091C] dark:to-[#0B0610]">
       {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/10 dark:bg-[#401F48]/22 rounded-full blur-3xl" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-accent/10 dark:bg-[#17091C]/55 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-8 md:px-12 lg:px-16 relative z-10">
         {/* Header */}
         <div className="text-center mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4 animate-slide-down">
-            <Quote className="w-4 h-4 text-primary" />
-            <span className="text-sm font-semibold text-primary">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 dark:bg-[#401F48]/28 border border-primary/20 dark:border-[#E8CDD1]/18 mb-4 animate-slide-down">
+            <Quote className="w-4 h-4 text-primary dark:text-[#E8CDD1]" />
+            <span className="text-sm font-semibold text-primary dark:text-[#E8CDD1]">
               Testimonials
             </span>
           </div>
 
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 animate-slide-up">
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground dark:text-[#F5F0EA] mb-4 animate-slide-up">
             What Our Users Say
           </h2>
 
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in">
+          <p className="text-lg text-muted-foreground dark:text-[#F5F0EA]/62 max-w-2xl mx-auto animate-fade-in">
             Trusted by thousands of property seekers across Bangladesh
           </p>
         </div>

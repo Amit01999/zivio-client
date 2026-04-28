@@ -24,23 +24,23 @@
   --sidebar: 292 20% 97%;
   --sidebar-foreground: 292 15% 15%;
   --sidebar-border: 292 15% 92%;
-  --sidebar-primary: 292 17% 41%;
+  --sidebar-primary: 291 40% 20%;
   --sidebar-primary-foreground: 0 0% 100%;
   --sidebar-accent: 292 15% 92%;
   --sidebar-accent-foreground: 292 15% 15%;
-  --sidebar-ring: 292 17% 41%;
+  --sidebar-ring: 291 40% 20%;
 
   /* Popover */
   --popover: 0 0% 98%;
   --popover-foreground: 292 15% 14%;
   --popover-border: 292 10% 90%;
 
-  /* Primary - Purple #75577A */
-  --primary: 292 17% 41%;
+  /* Primary - Deep Plum #401F48 */
+  --primary: 291 40% 20%;
   --primary-foreground: 0 0% 100%;
-  --primary-dark: 292 17% 31%;
-  --primary-light: 292 17% 60%;
-  --primary-soft: 292 17% 95%;
+  --primary-dark: 291 57% 14%;
+  --primary-light: 291 32% 36%;
+  --primary-soft: 291 34% 94%;
 
   /* Secondary - Light Pink #E8CDD1 */
   --secondary: 352 44% 86%;
@@ -62,10 +62,10 @@
 
   /* Form inputs */
   --input: 292 10% 78%;
-  --ring: 292 17% 41%;
+  --ring: 291 40% 20%;
 
   /* Charts */
-  --chart-1: 292 17% 41%;
+  --chart-1: 291 40% 20%;
   --chart-2: 352 44% 80%;
   --chart-3: 240 50% 55%;
   --chart-4: 310 35% 45%;
@@ -73,7 +73,7 @@
 
   /* Special badges */
   --featured: 352 44% 82%;
-  --verified: 292 17% 41%;
+  --verified: 291 40% 20%;
 
   /* Typography */
   --font-sans: Inter, system-ui, sans-serif;
@@ -133,23 +133,23 @@
   --sidebar: 292 18% 11%;
   --sidebar-foreground: 0 0% 95%;
   --sidebar-border: 292 15% 16%;
-  --sidebar-primary: 292 17% 51%;
+  --sidebar-primary: 291 34% 28%;
   --sidebar-primary-foreground: 0 0% 100%;
   --sidebar-accent: 292 15% 18%;
   --sidebar-accent-foreground: 0 0% 95%;
-  --sidebar-ring: 292 17% 51%;
+  --sidebar-ring: 291 34% 28%;
 
   /* Popover */
   --popover: 292 18% 12%;
   --popover-foreground: 0 0% 98%;
   --popover-border: 292 15% 18%;
 
-  /* Primary - Purple #75577A (brighter for dark mode) */
-  --primary: 292 17% 51%;
+  /* Primary - Deep Plum #401F48 (lifted for dark mode) */
+  --primary: 291 34% 28%;
   --primary-foreground: 0 0% 100%;
-  --primary-dark: 292 17% 38%;
-  --primary-light: 292 17% 65%;
-  --primary-soft: 292 17% 15%;
+  --primary-dark: 291 57% 14%;
+  --primary-light: 291 30% 42%;
+  --primary-soft: 291 24% 15%;
 
   /* Secondary - Light Pink #E8CDD1 */
   --secondary: 352 44% 82%;
@@ -171,10 +171,10 @@
 
   /* Form inputs */
   --input: 292 15% 28%;
-  --ring: 292 17% 51%;
+  --ring: 291 34% 28%;
 
   /* Charts */
-  --chart-1: 292 17% 55%;
+  --chart-1: 291 34% 34%;
   --chart-2: 352 44% 78%;
   --chart-3: 240 50% 65%;
   --chart-4: 310 35% 55%;
@@ -182,7 +182,7 @@
 
   /* Special badges */
   --featured: 352 44% 78%;
-  --verified: 292 17% 51%;
+  --verified: 291 34% 28%;
 
   /* Shadows (subtle in dark mode) */
   --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.15);

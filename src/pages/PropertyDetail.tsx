@@ -48,9 +48,10 @@ import {
 } from '@/lib/format';
 import { useAuth } from '@/lib/auth';
 import { apiRequest } from '@/lib/queryClient';
+import { queryClient } from '@/lib/queryClient';
 import { API_URL } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 
 const amenityIcons: Record<string, typeof Bed> = {
@@ -95,6 +96,18 @@ export default function PropertyDetail() {
     enabled: !!listing,
   });
 
+  // Sync isFavorited state from server once listing is loaded and user is authenticated
+  useEffect(() => {
+    if (!isAuthenticated || !listing?.id) return;
+    const token = localStorage.getItem('accessToken');
+    fetch(`${API_URL}/api/favorites/check/${listing.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((r) => r.json())
+      .then((data) => setIsFavorited(!!data.isFavorited))
+      .catch(() => {});
+  }, [isAuthenticated, listing?.id]);
+
   const handleFavorite = async () => {
     if (!isAuthenticated) {
       toast({
@@ -115,6 +128,8 @@ export default function PropertyDetail() {
         setIsFavorited(true);
         toast({ title: 'Added to favorites' });
       }
+      queryClient.invalidateQueries({ queryKey: ['/api/favorites'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['/api/dashboard/buyer'] });
     } catch (error) {
       toast({
         title: 'Error',

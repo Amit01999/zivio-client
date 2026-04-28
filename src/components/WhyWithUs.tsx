@@ -56,22 +56,22 @@ const ScrollStickySection = () => {
   return (
     <div
       ref={containerRef}
-      className="relative bg-[#F7F5F6] dark:bg-gray-900 font-sans"
+      className="relative bg-[#F7F5F6] dark:bg-[#0B0610] font-sans"
     >
       {/* Increased height slightly to 300vh for smoother scroll control on touch */}
       <div className="min-h-[300vh] relative">
         <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
           {/* Decorative Vertical Accent Line */}
-          <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[2px] h-full bg-gradient-to-b from-[#c9a7b3] dark:from-[#8B6C90] via-[#694E6F] dark:via-[#75577A] to-transparent opacity-40 pointer-events-none" />
+          <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[2px] h-full bg-gradient-to-b from-[#c9a7b3] dark:from-[#E8CDD1]/28 via-[#401F48] dark:via-[#E8CDD1]/18 to-transparent opacity-40 dark:opacity-70 pointer-events-none" />
 
           {/* Background Bars (Desktop) */}
           <div className="absolute inset-0 hidden md:block">
-            <div className="absolute left-0 top-0 bottom-0 w-[40%] bg-[#694E6F] dark:bg-gray-800" />
-            <div className="absolute right-0 top-0 bottom-0 w-[60%] bg-[#F7F5F6] dark:bg-gray-900" />
+            <div className="absolute left-0 top-0 bottom-0 w-[40%] bg-[#401F48] dark:bg-[#17091C]" />
+            <div className="absolute right-0 top-0 bottom-0 w-[60%] bg-[#F7F5F6] dark:bg-[#0B0610]" />
           </div>
 
           {/* Mobile Background Gradient */}
-          <div className="absolute inset-0 md:hidden bg-gradient-to-b from-white dark:from-gray-900 to-[#f1eaec] dark:to-gray-800" />
+          <div className="absolute inset-0 md:hidden bg-gradient-to-b from-white dark:from-[#17091C] to-[#f1eaec] dark:to-[#0B0610]" />
 
           <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 h-full flex items-center">
             {mockData.map((item, index) => {
@@ -89,7 +89,7 @@ const ScrollStickySection = () => {
                   {/* ============= MOBILE CARD ============= */}
                   <div className="w-full h-full flex items-center justify-center md:hidden pb-10">
                     <div
-                      className={`w-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/40 dark:border-gray-700/40 shadow-xl rounded-3xl overflow-hidden transform transition-all duration-700 ${
+                      className={`w-full bg-white/80 dark:bg-[#120A17] backdrop-blur-xl border border-white/40 dark:border-[#401F48]/35 shadow-xl dark:shadow-[0_24px_70px_rgba(0,0,0,0.42)] rounded-3xl overflow-hidden transform transition-all duration-700 ${
                         isActive
                           ? 'translate-y-0 opacity-100 scale-100'
                           : 'translate-y-12 opacity-0 scale-95'
@@ -104,38 +104,38 @@ const ScrollStickySection = () => {
                         />
 
                         {/* Top Gradient Line */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 dark:from-black/70 dark:via-[#17091C]/20 to-transparent pointer-events-none" />
                       </div>
 
                       <div className="p-6 relative">
                         {/* Thin Accent Line */}
-                        <div className="absolute left-0 top-6 h-10 w-[3px] rounded-full bg-[#694E6F] dark:bg-[#A88AAD]" />
+                        <div className="absolute left-0 top-6 h-10 w-[3px] rounded-full bg-[#401F48] dark:bg-[#E8CDD1]" />
 
-                        <h2 className="text-3xl font-bold mb-4 ml-4 tracking-tight text-[#694E6F] dark:text-[#A88AAD]">
+                        <h2 className="text-3xl font-bold mb-4 ml-4 tracking-tight text-[#401F48] dark:text-[#F5F0EA]">
                           {item.title}
                         </h2>
 
-                        <p className="text-gray-700 dark:text-gray-300 text-base mb-3 ml-4">
+                        <p className="text-gray-700 dark:text-[#F5F0EA]/72 text-base mb-3 ml-4">
                           {item.shortMobileText}
                         </p>
 
-                        <p className="font-semibold text-base ml-4 text-[#694E6F] dark:text-[#A88AAD]">
+                        <p className="font-semibold text-base ml-4 text-[#401F48] dark:text-[#E8CDD1]">
                           {item.highlightShort}
                         </p>
 
                         <a
                           href={item.buttonLink}
-                          className="mt-6 ml-4 inline-flex items-center gap-3 font-semibold text-lg text-[#694E6F] dark:text-[#A88AAD]"
+                          className="mt-6 ml-4 inline-flex items-center gap-3 font-semibold text-lg text-[#401F48] dark:text-[#F5F0EA]"
                         >
                           <span className="border-b-2 border-current pb-0.5">
                             {item.buttonText}
                           </span>
 
-                          <span className="w-10 h-10 rounded-full flex items-center justify-center shadow-md bg-[#E8CCD1] dark:bg-[#75577A]">
+                          <span className="w-10 h-10 rounded-full flex items-center justify-center shadow-md bg-[#E8CCD1] dark:bg-[#401F48] dark:shadow-[0_10px_24px_rgba(0,0,0,0.28)]">
                             <svg
-                              className="w-5 h-5"
+                              className="w-5 h-5 text-black dark:text-[#F5F0EA]"
                               fill="none"
-                              stroke="black"
+                              stroke="currentColor"
                               viewBox="0 0 24 24"
                             >
                               <path
@@ -175,42 +175,42 @@ const ScrollStickySection = () => {
                           alt={item.title}
                         />
 
-                        <div className="absolute inset-0 bg-gradient-to-tr from-black/40 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-tr from-black/40 dark:from-black/72 dark:via-[#17091C]/18 to-transparent" />
                       </div>
 
                       {/* Stylish Underline Accent */}
-                      <div className="absolute -bottom-5 left-6 w-[85%] h-[3px] rounded-full bg-gradient-to-r from-[#E8CCD1] dark:from-[#75577A] to-transparent" />
+                      <div className="absolute -bottom-5 left-6 w-[85%] h-[3px] rounded-full bg-gradient-to-r from-[#E8CCD1] dark:from-[#E8CDD1]/70 to-transparent" />
                     </div>
 
                     {/* TEXT */}
                     <div className="relative">
                       {/* Thin Vertical Line */}
-                      <div className="absolute -left-4 top-0 w-[3px] h-20 rounded-full bg-[#E8CCD1] dark:bg-[#75577A]" />
+                      <div className="absolute -left-4 top-0 w-[3px] h-20 rounded-full bg-[#E8CCD1] dark:bg-[#E8CDD1]" />
 
-                      <h2 className="text-5xl font-extrabold mb-10 leading-tight text-[#694E6F] dark:text-[#A88AAD]">
+                      <h2 className="text-5xl font-extrabold mb-10 leading-tight text-[#401F48] dark:text-[#F5F0EA]">
                         {item.title}
                       </h2>
 
-                      <p className="text-gray-700 dark:text-gray-300 text-lg mb-6 max-w-lg leading-relaxed">
+                      <p className="text-gray-700 dark:text-[#F5F0EA]/72 text-lg mb-6 max-w-lg leading-relaxed">
                         {item.shortMobileText}
                       </p>
 
-                      <p className="font-semibold text-xl mb-6 text-[#694E6F] dark:text-[#A88AAD]">
+                      <p className="font-semibold text-xl mb-6 text-[#401F48] dark:text-[#E8CDD1]">
                         {item.highlightShort}
                       </p>
 
                       <a
                         href={item.buttonLink}
-                        className="inline-flex items-center gap-4 text-xl font-bold group text-[#694E6F] dark:text-[#A88AAD]"
+                        className="inline-flex items-center gap-4 text-xl font-bold group text-[#401F48] dark:text-[#F5F0EA]"
                       >
                         <span className="relative">
                           {item.buttonText}
                           <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-current transition-all duration-300 group-hover:w-full" />
                         </span>
 
-                        <span className="w-12 h-12 rounded-full flex items-center justify-center shadow-md group-hover:scale-110 transition-all bg-[#E8CCD1] dark:bg-[#75577A]">
+                        <span className="w-12 h-12 rounded-full flex items-center justify-center shadow-md group-hover:scale-110 transition-all bg-[#E8CCD1] dark:bg-[#401F48] dark:shadow-[0_12px_26px_rgba(0,0,0,0.32)]">
                           <svg
-                            className="w-6 h-6 text-black dark:text-white"
+                            className="w-6 h-6 text-black dark:text-[#F5F0EA]"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -238,8 +238,8 @@ const ScrollStickySection = () => {
                 key={i}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
                   activeIndex === i
-                    ? 'bg-[#E8CCD1] dark:bg-[#A88AAD] scale-125 shadow-md'
-                    : 'bg-gray-300 dark:bg-gray-600'
+                    ? 'bg-[#E8CCD1] dark:bg-[#E8CDD1] scale-125 shadow-md dark:shadow-[0_0_18px_rgba(232,205,209,0.36)]'
+                    : 'bg-gray-300 dark:bg-[#401F48]/55'
                 }`}
               />
             ))}

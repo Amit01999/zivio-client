@@ -1,7 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { useLocation, useSearch } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
-import { Grid, List, Map, SlidersHorizontal, ChevronDown, AlertCircle } from 'lucide-react';
+import {
+  Grid,
+  List,
+  Map,
+  SlidersHorizontal,
+  ChevronDown,
+  AlertCircle,
+} from 'lucide-react';
 import { FilterPanel } from '@/components/FilterPanel';
 import { ListingCard, ListingCardSkeleton } from '@/components/ListingCard';
 import { Button } from '@/components/ui/button';
@@ -20,18 +27,19 @@ import type { SearchFilters, Listing, PaginatedResponse } from '@/types/schema';
 type ViewMode = 'grid' | 'list' | 'map';
 
 export default function Search() {
-  const [searchString] = useSearch();
+  const searchString = useSearch();
   const [, setLocation] = useLocation();
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
-  const getInitialFilters = (): SearchFilters => {
-    const params = new URLSearchParams(searchString);
+  const getFiltersFromSearch = (search: string): SearchFilters => {
+    const params = new URLSearchParams(search);
+    const listingType = params.get('listingType') || params.get('priceType');
+
     return {
       q: params.get('q') || undefined,
       city: params.get('city') || undefined,
       area: params.get('area') || undefined,
-      listingType:
-        (params.get('listingType') as SearchFilters['listingType']) || undefined,
+      listingType: (listingType as SearchFilters['listingType']) || undefined,
       propertyType:
         (params.get('propertyType') as SearchFilters['propertyType']) ||
         undefined,
@@ -68,12 +76,10 @@ export default function Search() {
     };
   };
 
-  const [filters, setFilters] = useState<SearchFilters>(() => getInitialFilters());
-
-  useEffect(() => {
-    const newFilters = getInitialFilters();
-    setFilters(newFilters);
-  }, [searchString]);
+  const filters = useMemo(
+    () => getFiltersFromSearch(searchString),
+    [searchString],
+  );
 
   const updateURL = (newFilters: SearchFilters) => {
     const params = new URLSearchParams();
@@ -95,19 +101,16 @@ export default function Search() {
   const handleFiltersChange = (newFilters: SearchFilters) => {
     console.log('[Search] Filters changed:', newFilters);
     const updated = { ...newFilters, page: 1 };
-    setFilters(updated);
     updateURL(updated);
   };
 
   const handleSortChange = (sortBy: string) => {
     const updated = { ...filters, sortBy: sortBy as SearchFilters['sortBy'] };
-    setFilters(updated);
     updateURL(updated);
   };
 
   const handlePageChange = (page: number) => {
     const updated = { ...filters, page };
-    setFilters(updated);
     updateURL(updated);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -123,8 +126,10 @@ export default function Search() {
     if (filters.listingType) params.set('listingType', filters.listingType);
     if (filters.propertyType) params.set('propertyType', filters.propertyType);
     if (filters.category) params.set('category', filters.category);
-    if (filters.completionStatus) params.set('completionStatus', filters.completionStatus);
-    if (filters.furnishingStatus) params.set('furnishingStatus', filters.furnishingStatus);
+    if (filters.completionStatus)
+      params.set('completionStatus', filters.completionStatus);
+    if (filters.furnishingStatus)
+      params.set('furnishingStatus', filters.furnishingStatus);
     if (filters.minPrice) params.set('minPrice', String(filters.minPrice));
     if (filters.maxPrice) params.set('maxPrice', String(filters.maxPrice));
     if (filters.bedrooms) params.set('bedrooms', String(filters.bedrooms));
@@ -140,7 +145,9 @@ export default function Search() {
     return params.toString();
   };
 
-  const { data, isLoading, error, refetch } = useQuery<PaginatedResponse<Listing>>({
+  const { data, isLoading, error, refetch } = useQuery<
+    PaginatedResponse<Listing>
+  >({
     queryKey: ['/api/listings', filters],
     queryFn: async () => {
       try {
@@ -163,7 +170,7 @@ export default function Search() {
         console.log('[Search] Received results:', {
           total: result.total,
           count: result.data?.length || 0,
-          page: result.page
+          page: result.page,
         });
 
         return result;
@@ -186,13 +193,13 @@ export default function Search() {
     if (filters.propertyType)
       labels.push(
         filters.propertyType.charAt(0).toUpperCase() +
-          filters.propertyType.slice(1)
+          filters.propertyType.slice(1),
       );
     if (filters.completionStatus) {
       labels.push(
         filters.completionStatus === 'ready'
           ? 'Ready to Move'
-          : 'Under Construction'
+          : 'Under Construction',
       );
     }
     if (filters.furnishingStatus) {
@@ -201,7 +208,9 @@ export default function Search() {
         semi_furnished: 'Semi-Furnished',
         unfurnished: 'Unfurnished',
       };
-      labels.push(furnishingLabels[filters.furnishingStatus] || filters.furnishingStatus);
+      labels.push(
+        furnishingLabels[filters.furnishingStatus] || filters.furnishingStatus,
+      );
     }
     if (filters.bedrooms) labels.push(`${filters.bedrooms}+ Beds`);
     if (filters.bathrooms) labels.push(`${filters.bathrooms}+ Baths`);
@@ -215,13 +224,17 @@ export default function Search() {
   return (
     <>
       <div className="bg-background min-h-screen">
-        <div className="container mx-auto px-8 md:px-12 lg:px-16 py-8">
+        <div className="container mx-auto px-5 py-8 md:px-8 lg:px-10 xl:px-14">
           <div className="mb-8">
             <h1
               className="font-heading text-3xl font-bold md:text-4xl mb-3"
               data-testid="text-search-title"
             >
-              {filters.q ? `Results for "${filters.q}"` : filters.area ? `Properties in ${filters.area}, Dhaka` : 'Properties in Dhaka'}
+              {filters.q
+                ? `Results for "${filters.q}"`
+                : filters.area
+                  ? `Properties in ${filters.area}, Dhaka`
+                  : 'Properties in Dhaka'}
             </h1>
             <div className="flex flex-wrap items-center gap-2">
               {isLoading ? (
@@ -312,8 +325,8 @@ export default function Search() {
             </Select>
           </div>
 
-          <div className="flex gap-6">
-            <aside className="hidden lg:block w-72 shrink-0">
+          <div className="flex items-start gap-8">
+            <aside className="hidden w-80 shrink-0 lg:block xl:w-[340px]">
               <FilterPanel
                 filters={filters}
                 onFiltersChange={handleFiltersChange}
@@ -331,14 +344,18 @@ export default function Search() {
                     Failed to load properties
                   </h3>
                   <p className="text-muted-foreground mb-4 max-w-md mx-auto">
-                    {error instanceof Error ? error.message : 'An unexpected error occurred'}
+                    {error instanceof Error
+                      ? error.message
+                      : 'An unexpected error occurred'}
                   </p>
                   <div className="flex gap-3 justify-center">
                     <Button onClick={() => refetch()} variant="default">
                       Try Again
                     </Button>
                     <Button
-                      onClick={() => handleFiltersChange({ page: 1, limit: 12 })}
+                      onClick={() =>
+                        handleFiltersChange({ page: 1, limit: 12 })
+                      }
                       variant="outline"
                     >
                       Clear Filters
@@ -442,7 +459,7 @@ export default function Search() {
                                 {page}
                               </Button>
                             );
-                          }
+                          },
                         )}
                       </div>
                       <Button

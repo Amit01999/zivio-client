@@ -37,7 +37,7 @@ async function refreshAccessToken(): Promise<string | null> {
       return null;
     }
 
-    const response = await fetch(`${API_URL}/auth/refresh`, {
+    const response = await fetch(`${API_URL}/api/auth/refresh`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -92,7 +92,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         token = newToken;
       }
 
-      const response = await fetch(`${API_URL}/auth/me`, {
+      const response = await fetch(`${API_URL}/api/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -106,7 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const newToken = await refreshAccessToken();
         if (newToken) {
           // Retry with new token
-          const retryResponse = await fetch(`${API_URL}/auth/me`, {
+          const retryResponse = await fetch(`${API_URL}/api/auth/me`, {
             headers: {
               Authorization: `Bearer ${newToken}`,
             },

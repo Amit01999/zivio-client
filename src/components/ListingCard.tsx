@@ -84,7 +84,7 @@ export function ListingCard({
 
   return (
     <Card
-      className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer"
+      className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer bg-[#F4EEE8] dark:bg-gray-900"
       onClick={handleCardClick}
       data-testid={`card-listing-${listing.id}`}
     >

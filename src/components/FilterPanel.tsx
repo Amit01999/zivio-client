@@ -58,6 +58,11 @@ export function FilterPanel({
     filters.minPrice || 0,
     filters.maxPrice || 50000000,
   ]);
+  const [openSections, setOpenSections] = useState<string[]>([
+    'property-type',
+    'price',
+    'bedrooms',
+  ]);
 
   useEffect(() => {
     setLocalFilters(filters);
@@ -119,17 +124,17 @@ export function FilterPanel({
   const FilterContent = () => (
     <div className="space-y-6">
       {/* Purpose Section - Always Visible */}
-      <div className="pb-4 border-b">
-        <h4 className="text-xs font-semibold text-foreground mb-3 uppercase tracking-wide">
+      <div className="border-b border-border/70 pb-5">
+        <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-foreground">
           Purpose
         </h4>
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-3 gap-2">
           <Button
             variant={!localFilters.listingType ? 'default' : 'outline'}
             size="sm"
             onClick={() => updateLocalFilter('listingType', undefined)}
             data-testid="filter-purpose-all"
-            className="flex-1"
+            className="h-9"
           >
             All
           </Button>
@@ -138,7 +143,7 @@ export function FilterPanel({
             size="sm"
             onClick={() => updateLocalFilter('listingType', 'sale')}
             data-testid="filter-buy"
-            className="flex-1"
+            className="h-9"
           >
             Buy
           </Button>
@@ -147,7 +152,7 @@ export function FilterPanel({
             size="sm"
             onClick={() => updateLocalFilter('listingType', 'rent')}
             data-testid="filter-rent"
-            className="flex-1"
+            className="h-9"
           >
             Rent
           </Button>
@@ -156,11 +161,12 @@ export function FilterPanel({
 
       <Accordion
         type="multiple"
-        defaultValue={['property-type', 'price', 'bedrooms']}
+        value={openSections}
+        onValueChange={setOpenSections}
         className="w-full"
       >
-        <AccordionItem value="property-type">
-          <AccordionTrigger className="text-sm font-medium py-2">
+        <AccordionItem value="property-type" className="border-border/70">
+          <AccordionTrigger className="py-3 text-sm font-semibold">
             Property Type
           </AccordionTrigger>
           <AccordionContent>
@@ -188,13 +194,13 @@ export function FilterPanel({
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="location">
-          <AccordionTrigger className="text-sm font-medium py-2">
+        <AccordionItem value="location" className="border-border/70">
+          <AccordionTrigger className="py-3 text-sm font-semibold">
             Location
           </AccordionTrigger>
           <AccordionContent>
             <div className="space-y-3 pt-2">
-              <div className="flex items-center gap-2 p-2 bg-muted/50 rounded-md">
+              <div className="flex items-center gap-2 rounded-lg bg-muted/50 p-2.5">
                 <span className="text-xs font-medium text-muted-foreground">City:</span>
                 <span className="text-sm font-semibold">Dhaka</span>
               </div>
@@ -227,13 +233,13 @@ export function FilterPanel({
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="price">
-          <AccordionTrigger className="text-sm font-medium py-2">
+        <AccordionItem value="price" className="border-border/70">
+          <AccordionTrigger className="py-3 text-sm font-semibold">
             Price Range (BDT)
           </AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-4 pt-2">
-              <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
+            <div className="space-y-5 pt-2">
+              <div className="flex items-center justify-between gap-3 text-xs font-semibold text-muted-foreground">
                 <span>{formatPrice(priceRange[0], true)}</span>
                 <span>{formatPrice(priceRange[1], true)}</span>
               </div>
@@ -243,10 +249,10 @@ export function FilterPanel({
                 max={50000000}
                 step={100000}
                 onValueChange={handlePriceChange}
-                className="w-full"
+                className="w-full px-1 [&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:border-[3px] [&_[role=slider]]:border-[#401F48] [&_[role=slider]]:bg-background [&_[role=slider]]:shadow-[0_4px_14px_rgba(44,17,51,0.18)] [&_[role=slider]]:transition-transform [&_[role=slider]]:hover:scale-110 [&_[role=slider]]:focus-visible:ring-[#401F48]/30 [&_[data-orientation=horizontal]]:h-2.5"
                 data-testid="filter-price-slider"
               />
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label className="text-xs mb-1.5 block font-medium">
                     Min
@@ -282,8 +288,8 @@ export function FilterPanel({
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="bedrooms">
-          <AccordionTrigger className="text-sm font-medium py-2">
+        <AccordionItem value="bedrooms" className="border-border/70">
+          <AccordionTrigger className="py-3 text-sm font-semibold">
             Bedrooms & Bathrooms
           </AccordionTrigger>
           <AccordionContent>
@@ -360,8 +366,8 @@ export function FilterPanel({
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="status">
-          <AccordionTrigger className="text-sm font-medium py-2">
+        <AccordionItem value="status" className="border-border/70">
+          <AccordionTrigger className="py-3 text-sm font-semibold">
             Completion & Furnishing
           </AccordionTrigger>
           <AccordionContent>
@@ -412,8 +418,8 @@ export function FilterPanel({
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="area">
-          <AccordionTrigger className="text-sm font-medium py-2">
+        <AccordionItem value="area" className="border-border/70">
+          <AccordionTrigger className="py-3 text-sm font-semibold">
             Property Size
           </AccordionTrigger>
           <AccordionContent>
@@ -458,14 +464,18 @@ export function FilterPanel({
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="amenities">
-          <AccordionTrigger className="text-sm font-medium py-2">
+        <AccordionItem value="amenities" className="border-border/70">
+          <AccordionTrigger className="py-3 text-sm font-semibold">
             Amenities
           </AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-2 gap-2.5 pt-2">
               {amenitiesList.map(amenity => (
-                <div key={amenity} className="flex items-center space-x-2">
+                <div
+                  key={amenity}
+                  className="flex items-center space-x-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-muted/60"
+                  onClick={event => event.stopPropagation()}
+                >
                   <Checkbox
                     id={`amenity-${amenity}`}
                     checked={(localFilters.amenities || []).includes(amenity)}
@@ -487,8 +497,8 @@ export function FilterPanel({
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="verified">
-          <AccordionTrigger className="text-sm font-medium py-2">
+        <AccordionItem value="verified" className="border-border/70">
+          <AccordionTrigger className="py-3 text-sm font-semibold">
             Listing Status
           </AccordionTrigger>
           <AccordionContent>
@@ -533,7 +543,7 @@ export function FilterPanel({
       </Accordion>
 
       {/* Apply Filters Button */}
-      <div className="mt-6 space-y-3">
+      <div className="mt-6 space-y-3 border-t border-border/70 pt-5">
         <Button
           onClick={applyFilters}
           className="w-full"
@@ -557,10 +567,17 @@ export function FilterPanel({
   return (
     <>
       <div className="hidden lg:block">
-        <div className="sticky top-24 z-20">
-          <div className="bg-background rounded-lg border shadow-sm p-4">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-heading font-semibold text-base">Filters</h3>
+        <div className="sticky top-[88px] z-20 h-[calc(100vh-104px)]">
+          <div className="flex h-full flex-col overflow-hidden rounded-xl border border-border/80 bg-background shadow-[0_16px_40px_rgba(15,23,42,0.08)]">
+            <div className="flex items-center justify-between border-b border-border/70 px-5 py-4">
+              <div>
+                <h3 className="font-heading text-base font-semibold">Filters</h3>
+                {typeof totalResults === 'number' && (
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {totalResults} {totalResults === 1 ? 'property' : 'properties'}
+                  </p>
+                )}
+              </div>
               {activeFilterCount > 0 && (
                 <Button
                   variant="ghost"
@@ -573,19 +590,19 @@ export function FilterPanel({
                 </Button>
               )}
             </div>
-            <div className="h-[calc(100vh-250px)] overflow-y-auto pr-3">
+            <div className="filter-panel-scroll min-h-0 flex-1 overflow-y-auto px-5 py-5 pr-4">
               <style>{`
-                .overflow-y-auto::-webkit-scrollbar {
+                .filter-panel-scroll::-webkit-scrollbar {
                   width: 6px;
                 }
-                .overflow-y-auto::-webkit-scrollbar-track {
+                .filter-panel-scroll::-webkit-scrollbar-track {
                   background: transparent;
                 }
-                .overflow-y-auto::-webkit-scrollbar-thumb {
+                .filter-panel-scroll::-webkit-scrollbar-thumb {
                   background: hsl(var(--muted-foreground) / 0.3);
                   border-radius: 3px;
                 }
-                .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+                .filter-panel-scroll::-webkit-scrollbar-thumb:hover {
                   background: hsl(var(--muted-foreground) / 0.5);
                 }
               `}</style>

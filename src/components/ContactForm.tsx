@@ -1,31 +1,21 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Send, Loader2, Calendar, MessageSquare, Phone } from "lucide-react";
+import { Send, Loader2, Calendar, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { contactFormSchema, type ContactFormData, type Listing, type SafeUser } from "@/types/schema";
+import type { Listing, SafeUser } from "@/types/schema";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/lib/auth";
 import { apiRequest } from "@/lib/queryClient";
+import { queryClient } from "@/lib/queryClient";
 import { format } from "date-fns";
 
 interface ContactFormProps {
@@ -33,74 +23,71 @@ interface ContactFormProps {
   agent?: SafeUser;
 }
 
-export function ContactForm({ listing, agent }: ContactFormProps) {
+export function ContactForm({ listing }: ContactFormProps) {
   const { user, isAuthenticated } = useAuth();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState(
+    `Hi, I'm interested in this property: ${listing.title}. Please contact me with more details.`
+  );
   const [selectedDate, setSelectedDate] = useState<Date>();
+  const [viewingNotes, setViewingNotes] = useState("");
 
-  const form = useForm<ContactFormData>({
-    resolver: zodResolver(contactFormSchema),
-    defaultValues: {
-      name: user?.name || "",
-      email: user?.email || "",
-      phone: user?.phone || "",
-      message: `Hi, I'm interested in this property: ${listing.title}. Please contact me with more details.`,
-    },
-  });
+  const handleSendMessage = async () => {
+    if (!isAuthenticated) {
+      toast({ title: "Login required", description: "Please login to send messages.", variant: "destructive" });
+      return;
+    }
+    if (!message.trim()) {
+      toast({ title: "Message required", description: "Please enter a message.", variant: "destructive" });
+      return;
+    }
 
-  const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     try {
-      await apiRequest("POST", "/api/inquiries", {
-        ...data,
-        listingId: listing.id,
-        type: "contact",
+      await apiRequest("POST", "/api/property-inquiries", {
+        requestType: "meeting",
+        propertyId: listing.id,
+        message: message.trim(),
       });
-      toast({
-        title: "Message Sent!",
-        description: "The agent will contact you shortly.",
-      });
-      form.reset();
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      });
+      toast({ title: "Message Sent!", description: "The agent will contact you shortly." });
+      setMessage("");
+      queryClient.invalidateQueries({ queryKey: ["/api/property-inquiries"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/dashboard/buyer"] });
+    } catch {
+      toast({ title: "Error", description: "Failed to send message. Please try again.", variant: "destructive" });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleScheduleViewing = async () => {
+    if (!isAuthenticated) {
+      toast({ title: "Login required", description: "Please login to schedule viewings.", variant: "destructive" });
+      return;
+    }
     if (!selectedDate) {
-      toast({
-        title: "Select a date",
-        description: "Please select a preferred viewing date.",
-        variant: "destructive",
-      });
+      toast({ title: "Select a date", description: "Please select a preferred viewing date.", variant: "destructive" });
       return;
     }
 
     setIsSubmitting(true);
     try {
-      await apiRequest("POST", "/api/viewing-requests", {
-        listingId: listing.id,
-        preferredDate: selectedDate.toISOString(),
-        message: form.getValues("message"),
+      await apiRequest("POST", "/api/property-inquiries", {
+        requestType: "viewing",
+        propertyId: listing.id,
+        message: viewingNotes.trim() || `Viewing request for: ${listing.title}`,
+        metadata: {
+          preferredDate: selectedDate.toISOString(),
+        },
       });
-      toast({
-        title: "Viewing Requested!",
-        description: "We'll confirm your viewing appointment shortly.",
-      });
+      toast({ title: "Viewing Requested!", description: "We'll confirm your viewing appointment shortly." });
       setSelectedDate(undefined);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to schedule viewing. Please try again.",
-        variant: "destructive",
-      });
+      setViewingNotes("");
+      queryClient.invalidateQueries({ queryKey: ["/api/property-inquiries"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/dashboard/buyer"] });
+    } catch {
+      toast({ title: "Error", description: "Failed to schedule viewing. Please try again.", variant: "destructive" });
     } finally {
       setIsSubmitting(false);
     }
@@ -110,6 +97,11 @@ export function ContactForm({ listing, agent }: ContactFormProps) {
     <Card className="sticky top-20" data-testid="contact-form-card">
       <CardHeader className="pb-4">
         <CardTitle className="font-heading text-xl">Contact Agent</CardTitle>
+        {user && (
+          <p className="text-sm text-muted-foreground">
+            Sending as <span className="font-medium">{user.name}</span>
+          </p>
+        )}
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="message" className="w-full">
@@ -124,97 +116,37 @@ export function ContactForm({ listing, agent }: ContactFormProps) {
             </TabsTrigger>
           </TabsList>
 
+          {/* Message Tab */}
           <TabsContent value="message">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Your name" {...field} data-testid="input-contact-name" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="message" className="mb-1.5 block">Your Message</Label>
+                <Textarea
+                  id="message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="I'm interested in this property..."
+                  className="min-h-[120px] resize-none"
+                  data-testid="input-contact-message"
                 />
-
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="your@email.com"
-                          {...field}
-                          data-testid="input-contact-email"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="tel"
-                          placeholder="+880 1XXX-XXXXXX"
-                          {...field}
-                          data-testid="input-contact-phone"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Message</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="I'm interested in this property..."
-                          className="min-h-[100px] resize-none"
-                          {...field}
-                          data-testid="input-contact-message"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button
-                  type="submit"
-                  className="w-full gap-2"
-                  disabled={isSubmitting}
-                  data-testid="button-send-message"
-                >
-                  {isSubmitting ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Send className="h-4 w-4" />
-                  )}
-                  Send Message
-                </Button>
-              </form>
-            </Form>
+              </div>
+              <Button
+                className="w-full gap-2"
+                onClick={handleSendMessage}
+                disabled={isSubmitting || !message.trim()}
+                data-testid="button-send-message"
+              >
+                {isSubmitting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
+                Send Message
+              </Button>
+            </div>
           </TabsContent>
 
+          {/* Viewing Tab */}
           <TabsContent value="viewing">
             <div className="space-y-4">
               <div>
@@ -242,11 +174,17 @@ export function ContactForm({ listing, agent }: ContactFormProps) {
                 </Popover>
               </div>
 
-              <Textarea
-                placeholder="Any specific time or requirements? (Optional)"
-                className="min-h-[80px] resize-none"
-                data-testid="input-viewing-notes"
-              />
+              <div>
+                <Label htmlFor="viewing-notes" className="mb-1.5 block">Notes (Optional)</Label>
+                <Textarea
+                  id="viewing-notes"
+                  value={viewingNotes}
+                  onChange={(e) => setViewingNotes(e.target.value)}
+                  placeholder="Any specific time or requirements?"
+                  className="min-h-[80px] resize-none"
+                  data-testid="input-viewing-notes"
+                />
+              </div>
 
               <Button
                 className="w-full gap-2"
@@ -264,17 +202,6 @@ export function ContactForm({ listing, agent }: ContactFormProps) {
             </div>
           </TabsContent>
         </Tabs>
-
-        {agent?.phone && (
-          <div className="mt-4 pt-4 border-t">
-            <Button variant="outline" className="w-full gap-2" asChild data-testid="button-call-agent">
-              <a href={`tel:${agent.phone}`}>
-                <Phone className="h-4 w-4" />
-                Call Agent
-              </a>
-            </Button>
-          </div>
-        )}
       </CardContent>
     </Card>
   );
