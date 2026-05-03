@@ -1,21 +1,28 @@
-import { Phone, MessageSquare, Calendar, Star, Building2, CheckCircle } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import type { Broker, SafeUser, Listing } from "@/types/schema";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/lib/auth";
+import {
+  Phone,
+  MessageSquare,
+  Calendar,
+  Star,
+  Building2,
+  CheckCircle,
+} from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import type { Broker, SafeUser, Listing } from '@/types/schema';
+import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/lib/auth';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { ContactForm } from "./ContactForm";
+} from '@/components/ui/dialog';
+import { ContactForm } from './ContactForm';
 
 interface AgentContactCardProps {
   broker?: Broker & { user?: SafeUser };
@@ -23,7 +30,11 @@ interface AgentContactCardProps {
   agent?: SafeUser;
 }
 
-export function AgentContactCard({ broker, listing, agent }: AgentContactCardProps) {
+export function AgentContactCard({
+  broker,
+  listing,
+  agent,
+}: AgentContactCardProps) {
   const { toast } = useToast();
   const { isAuthenticated } = useAuth();
   const [showContactDialog, setShowContactDialog] = useState(false);
@@ -32,9 +43,9 @@ export function AgentContactCard({ broker, listing, agent }: AgentContactCardPro
   const handleCallAgent = () => {
     if (!user?.phone) {
       toast({
-        title: "Phone not available",
+        title: 'Phone not available',
         description: "Agent's phone number is not available.",
-        variant: "destructive",
+        variant: 'destructive',
       });
     }
   };
@@ -42,9 +53,9 @@ export function AgentContactCard({ broker, listing, agent }: AgentContactCardPro
   const handleSendMessage = () => {
     if (!isAuthenticated) {
       toast({
-        title: "Login Required",
-        description: "Please login to send messages.",
-        variant: "destructive",
+        title: 'Login Required',
+        description: 'Please login to send messages.',
+        variant: 'destructive',
       });
       return;
     }
@@ -54,9 +65,9 @@ export function AgentContactCard({ broker, listing, agent }: AgentContactCardPro
   const handleScheduleViewing = () => {
     if (!isAuthenticated) {
       toast({
-        title: "Login Required",
-        description: "Please login to schedule viewings.",
-        variant: "destructive",
+        title: 'Login Required',
+        description: 'Please login to schedule viewings.',
+        variant: 'destructive',
       });
       return;
     }
@@ -65,19 +76,29 @@ export function AgentContactCard({ broker, listing, agent }: AgentContactCardPro
 
   return (
     <>
-      <Card className="sticky top-20 shadow-lg" data-testid="agent-contact-card">
+      <Card
+        className="sticky top-20 shadow-lg"
+        data-testid="agent-contact-card"
+      >
         <CardContent className="p-6">
           {/* Agent Info */}
-          <div className="flex items-start gap-4 mb-6">
-            <Avatar className="h-16 w-16 shrink-0 ring-2 ring-primary/10">
-              <AvatarImage src={user?.profilePhotoUrl || undefined} alt={user?.name} />
+          <div className="flex items-start  gap-4 mb-6">
+            <Avatar className="h-10 w-10 shrink-0 ring-2 ring-primary/10">
+              <AvatarImage
+                src={user?.profilePhotoUrl || undefined}
+                alt={user?.name}
+              />
               <AvatarFallback className="bg-primary text-primary-foreground text-xl font-semibold">
-                {user?.name?.charAt(0).toUpperCase() || "A"}
+                {user?.name?.charAt(0).toUpperCase() || 'A'}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <h3 className="font-heading font-bold text-lg truncate mb-1" data-testid="agent-name">
-                {user?.name || "Property Agent"}
+              <h3
+                className="font-heading font-bold text-lg truncate mb-1"
+                data-testid="agent-name"
+              >
+                Property Consultant
+                {/* {user?.name || 'Property Agent'} */}
               </h3>
               {broker?.agencyName && (
                 <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-2">
@@ -89,7 +110,9 @@ export function AgentContactCard({ broker, listing, agent }: AgentContactCardPro
                 {broker?.rating && broker.rating > 0 && (
                   <div className="flex items-center gap-1">
                     <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="font-semibold text-sm">{broker.rating.toFixed(1)}</span>
+                    <span className="font-semibold text-sm">
+                      {broker.rating.toFixed(1)}
+                    </span>
                   </div>
                 )}
                 {broker?.verified && (
@@ -116,12 +139,12 @@ export function AgentContactCard({ broker, listing, agent }: AgentContactCardPro
               {user?.phone ? (
                 <a href={`tel:${user.phone}`}>
                   <Phone className="h-5 w-5" />
-                  Call Agent
+                  Call
                 </a>
               ) : (
                 <>
                   <Phone className="h-5 w-5" />
-                  Call Agent
+                  Call
                 </>
               )}
             </Button>

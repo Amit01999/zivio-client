@@ -1,5 +1,9 @@
 // Currency formatting for Bangladesh Taka
-export function formatPrice(amount: number | string, compact = false): string {
+export function formatPrice(amount?: number | string | null, compact = false): string {
+  if (amount === undefined || amount === null || amount === "") {
+    return "Price on request";
+  }
+
   // If the price is a string, check if it's a numeric string
   if (typeof amount === 'string') {
     const numericValue = parseFloat(amount);

@@ -40,7 +40,7 @@ interface DashboardData {
   listings: { total: number; published: number; pending: number; rejected: number; sold: number; rented: number };
   inquiries: { total: number; new: number; contacted: number; closed: number };
   revenue: number;
-  recentListings: Array<{ id: string; title: string; city: string; status: string; propertyType: string; images?: string[]; createdAt: string; price: number | string; views?: number }>;
+  recentListings: Array<{ id: string; title: string; city: string; status: string; propertyType: string; images?: string[]; createdAt: string; price?: number | string | null; views?: number }>;
   recentInquiries: Array<{ id: string; requestType: string; status: string; buyerName: string; propertyTitle: string; propertyCity: string; createdAt: string }>;
   recentUsers: Array<{ id: string; name: string; email: string; role: string; createdAt: string; profilePhotoUrl?: string | null }>;
   topListingsByViews: Array<{ id: string; title: string; city: string; views: number; images?: string[]; slug?: string }>;

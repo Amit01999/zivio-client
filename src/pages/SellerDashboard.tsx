@@ -278,13 +278,15 @@ export default function SellerDashboard() {
     e.preventDefault();
     if (!editingListing) return;
     const formData = new FormData(e.currentTarget);
+    const priceValue = formData.get('price');
+    const addressValue = formData.get('address') as string;
     updateListingMutation.mutate({
       id: editingListing.id,
       data: {
         title: formData.get('title') as string,
         description: formData.get('description') as string,
-        price: Number(formData.get('price')),
-        address: formData.get('address') as string,
+        price: priceValue ? Number(priceValue) : undefined,
+        address: addressValue || undefined,
         city: formData.get('city') as string,
         bedrooms: Number(formData.get('bedrooms')) || undefined,
         bathrooms: Number(formData.get('bathrooms')) || undefined,
@@ -1002,13 +1004,12 @@ export default function SellerDashboard() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="price">Price (BDT)</Label>
+                  <Label htmlFor="price">Price (BDT) (Optional)</Label>
                   <Input
                     id="price"
                     name="price"
                     type="number"
-                    defaultValue={editingListing.price as number}
-                    required
+                    defaultValue={typeof editingListing.price === 'number' || typeof editingListing.price === 'string' ? editingListing.price : ''}
                   />
                 </div>
                 <div>
@@ -1052,12 +1053,11 @@ export default function SellerDashboard() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="address">Address</Label>
+                  <Label htmlFor="address">Address (Optional)</Label>
                   <Input
                     id="address"
                     name="address"
-                    defaultValue={editingListing.address}
-                    required
+                    defaultValue={editingListing.address || ''}
                   />
                 </div>
               </div>

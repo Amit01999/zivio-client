@@ -118,7 +118,7 @@ export interface Listing {
   description?: string | null;
 
   // Pricing
-  price: number | string; // Supports both numeric and text values (e.g., "Contact for Price")
+  price?: number | string | null; // Supports both numeric and text values (e.g., "Contact for Price")
   pricePerSqft?: number | null;
   listingType: ListingType;
   negotiable?: boolean | null;
@@ -153,7 +153,7 @@ export interface Listing {
   amenities?: string[] | null;
 
   // Location
-  address: string;
+  address?: string | null;
   city: string;
   district?: string | null;
   area?: string | null;
@@ -200,7 +200,7 @@ export interface InsertListing {
   description?: string;
 
   // Pricing
-  price: number | string; // Supports both numeric and text values (e.g., "Contact for Price")
+  price?: number | string; // Supports both numeric and text values (e.g., "Contact for Price")
   pricePerSqft?: number;
   negotiable?: boolean;
 
@@ -230,7 +230,7 @@ export interface InsertListing {
   amenities?: string[];
 
   // Location
-  address: string;
+  address?: string;
   city: string;
   district?: string;
   area?: string;
@@ -574,10 +574,13 @@ export const listingFormSchema = z.object({
   description: z.string().optional(),
 
   // Pricing
-  price: z.union([
-    z.number().min(1, "Price must be greater than 0"),
-    z.string().min(1, "Price is required")
-  ]),
+  price: z.preprocess(
+    val => val === "" || val === null ? undefined : val,
+    z.union([
+      z.number().min(1, "Price must be greater than 0"),
+      z.string().min(1, "Price is required")
+    ]).optional()
+  ),
   pricePerSqft: z.number().optional(),
   negotiable: z.boolean().optional(),
 
@@ -606,7 +609,10 @@ export const listingFormSchema = z.object({
   liftAvailable: z.boolean().optional(),
 
   // Location
-  address: z.string().min(5, "Address is required"),
+  address: z.preprocess(
+    val => val === "" || val === null ? undefined : val,
+    z.string().min(5, "Address must be at least 5 characters").optional()
+  ),
   city: z.string().min(1, "City is required"),
   district: z.string().optional(),
   area: z.string().optional(),

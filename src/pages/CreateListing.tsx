@@ -204,7 +204,7 @@ function CreateListingContent() {
         {
           shouldValidate: true,
           shouldDirty: true,
-        }
+        },
       );
 
       setUploadProgress(100);
@@ -220,7 +220,7 @@ function CreateListingContent() {
 
       console.log(
         'Images uploaded and synced with form:',
-        updatedImages.length
+        updatedImages.length,
       );
     } catch (error: any) {
       console.error('Upload error:', error);
@@ -257,7 +257,7 @@ function CreateListingContent() {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
       }
 
@@ -272,7 +272,7 @@ function CreateListingContent() {
         {
           shouldValidate: true,
           shouldDirty: true,
-        }
+        },
       );
 
       toast({
@@ -282,7 +282,7 @@ function CreateListingContent() {
 
       console.log(
         'Image removed and synced with form. Remaining:',
-        updatedImages.length
+        updatedImages.length,
       );
     } catch (error) {
       console.error('Delete error:', error);
@@ -298,7 +298,7 @@ function CreateListingContent() {
     setSelectedAmenities(prev =>
       prev.includes(amenity)
         ? prev.filter(a => a !== amenity)
-        : [...prev, amenity]
+        : [...prev, amenity],
     );
   };
 
@@ -311,7 +311,7 @@ function CreateListingContent() {
         fields = ['title', 'propertyType', 'listingType'];
         break;
       case 2: // Location
-        fields = ['city', 'address'];
+        fields = ['city'];
         break;
       case 3: // Property Details
         fields = ['areaSqFt'];
@@ -321,8 +321,7 @@ function CreateListingContent() {
       case 5: // Amenities & Security (all optional)
         return true;
       case 6: // Pricing & Seller
-        fields = ['price'];
-        break;
+        return true;
       case 7: // Media & Contact
         // Images validation - check both state and form field
         const formImages = form.getValues('images') || [];
@@ -391,13 +390,6 @@ function CreateListingContent() {
   };
 
   const onSubmit = async (data: ListingFormData) => {
-    console.log('=== FORM SUBMISSION STARTED ===');
-    console.log('Form data received:', data);
-    console.log('Form errors:', form.formState.errors);
-    console.log('Uploaded images count:', uploadedImages.length);
-    console.log('Form images field:', data.images);
-    console.log('Selected amenities:', selectedAmenities);
-
     // Validate all steps before submission
     const allStepsValid = await validateAllSteps();
     if (!allStepsValid) {
@@ -564,10 +556,10 @@ function CreateListingContent() {
                                 isCompleted
                                   ? 'border-primary bg-primary text-primary-foreground shadow-md'
                                   : isCurrent
-                                  ? hasErrors
-                                    ? 'border-destructive bg-destructive/10 text-destructive'
-                                    : 'border-primary bg-primary/10 text-primary shadow-sm'
-                                  : 'border-muted-foreground/30 bg-muted text-muted-foreground'
+                                    ? hasErrors
+                                      ? 'border-destructive bg-destructive/10 text-destructive'
+                                      : 'border-primary bg-primary/10 text-primary shadow-sm'
+                                    : 'border-muted-foreground/30 bg-muted text-muted-foreground'
                               }`}
                             >
                               {isCompleted ? (
@@ -587,8 +579,8 @@ function CreateListingContent() {
                                     ? 'text-destructive'
                                     : 'text-primary'
                                   : isCompleted
-                                  ? 'text-foreground'
-                                  : 'text-muted-foreground'
+                                    ? 'text-foreground'
+                                    : 'text-muted-foreground'
                               }`}
                             >
                               {step.title}
@@ -638,10 +630,10 @@ function CreateListingContent() {
                             isCompleted
                               ? 'border-primary bg-primary text-primary-foreground'
                               : isCurrent
-                              ? hasErrors
-                                ? 'border-destructive bg-destructive/10 text-destructive'
-                                : 'border-primary bg-primary/10 text-primary'
-                              : 'border-muted-foreground/30 bg-background text-muted-foreground'
+                                ? hasErrors
+                                  ? 'border-destructive bg-destructive/10 text-destructive'
+                                  : 'border-primary bg-primary/10 text-primary'
+                                : 'border-muted-foreground/30 bg-background text-muted-foreground'
                           }`}
                         >
                           {isCompleted ? (
@@ -905,7 +897,7 @@ function CreateListingContent() {
                     name="address"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Full Address</FormLabel>
+                        <FormLabel>Full Address (Optional)</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="House/Road/Block details"
@@ -962,7 +954,7 @@ function CreateListingContent() {
                             onChange={e => {
                               const value = e.target.value;
                               field.onChange(
-                                value === '' ? undefined : parseInt(value)
+                                value === '' ? undefined : parseInt(value),
                               );
                             }}
                             data-testid="input-area"
@@ -975,7 +967,7 @@ function CreateListingContent() {
 
                   {/* Conditional: Residential Properties Only */}
                   {['apartment', 'house', 'flat'].includes(
-                    form.watch('propertyType')
+                    form.watch('propertyType'),
                   ) && (
                     <div className="grid gap-4 sm:grid-cols-2">
                       <FormField
@@ -994,7 +986,7 @@ function CreateListingContent() {
                                 onChange={e => {
                                   const value = e.target.value;
                                   field.onChange(
-                                    value === '' ? undefined : parseInt(value)
+                                    value === '' ? undefined : parseInt(value),
                                   );
                                 }}
                                 data-testid="input-bedrooms"
@@ -1021,7 +1013,7 @@ function CreateListingContent() {
                                 onChange={e => {
                                   const value = e.target.value;
                                   field.onChange(
-                                    value === '' ? undefined : parseInt(value)
+                                    value === '' ? undefined : parseInt(value),
                                   );
                                 }}
                                 data-testid="input-bathrooms"
@@ -1144,7 +1136,7 @@ function CreateListingContent() {
                               {...field}
                               onChange={e =>
                                 field.onChange(
-                                  parseInt(e.target.value) || undefined
+                                  parseInt(e.target.value) || undefined,
                                 )
                               }
                             />
@@ -1167,7 +1159,7 @@ function CreateListingContent() {
                               {...field}
                               onChange={e =>
                                 field.onChange(
-                                  parseInt(e.target.value) || undefined
+                                  parseInt(e.target.value) || undefined,
                                 )
                               }
                             />
@@ -1193,7 +1185,7 @@ function CreateListingContent() {
                               {...field}
                               onChange={e =>
                                 field.onChange(
-                                  parseInt(e.target.value) || undefined
+                                  parseInt(e.target.value) || undefined,
                                 )
                               }
                             />
@@ -1217,7 +1209,7 @@ function CreateListingContent() {
                               {...field}
                               onChange={e =>
                                 field.onChange(
-                                  parseInt(e.target.value) || undefined
+                                  parseInt(e.target.value) || undefined,
                                 )
                               }
                             />
@@ -1445,7 +1437,7 @@ function CreateListingContent() {
                           checked={priceType === 'numeric'}
                           onCheckedChange={() => {
                             setPriceType('numeric');
-                            form.setValue('price', undefined);
+                            form.setValue('price', '');
                           }}
                         />
                         <Label
@@ -1477,7 +1469,7 @@ function CreateListingContent() {
                       name="price"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Price (BDT)</FormLabel>
+                          <FormLabel>Price (BDT) (Optional)</FormLabel>
                           <FormControl>
                             {priceType === 'numeric' ? (
                               <Input
@@ -1499,7 +1491,7 @@ function CreateListingContent() {
                                     if (area && area > 0) {
                                       form.setValue(
                                         'pricePerSqft',
-                                        Math.round(val / area)
+                                        Math.round(val / area),
                                       );
                                     }
                                   }
@@ -1547,7 +1539,7 @@ function CreateListingContent() {
                               onChange={e => {
                                 const value = e.target.value;
                                 field.onChange(
-                                  value === '' ? undefined : parseInt(value)
+                                  value === '' ? undefined : parseInt(value),
                                 );
                               }}
                               data-testid="input-price-per-sqft"
@@ -1898,7 +1890,7 @@ function CreateListingContent() {
                     console.log('Images uploaded:', uploadedImages.length);
                     console.log(
                       'Button disabled:',
-                      isSubmitting || uploadedImages.length === 0
+                      isSubmitting || uploadedImages.length === 0,
                     );
                     console.log('Current step:', currentStep);
                     console.log('Form is valid:', form.formState.isValid);
