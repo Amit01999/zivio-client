@@ -279,13 +279,17 @@ export default function SellerDashboard() {
     if (!editingListing) return;
     const formData = new FormData(e.currentTarget);
     const priceValue = formData.get('price');
+    const price =
+      typeof priceValue === 'string' && priceValue !== ''
+        ? priceValue
+        : undefined;
     const addressValue = formData.get('address') as string;
     updateListingMutation.mutate({
       id: editingListing.id,
       data: {
         title: formData.get('title') as string,
         description: formData.get('description') as string,
-        price: priceValue ? Number(priceValue) : undefined,
+        price,
         address: addressValue || undefined,
         city: formData.get('city') as string,
         bedrooms: Number(formData.get('bedrooms')) || undefined,
@@ -1008,7 +1012,7 @@ export default function SellerDashboard() {
                   <Input
                     id="price"
                     name="price"
-                    type="number"
+                    type="text"
                     defaultValue={typeof editingListing.price === 'number' || typeof editingListing.price === 'string' ? editingListing.price : ''}
                   />
                 </div>

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useState } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import {
   CheckCircle,
   XCircle,
@@ -9,11 +9,17 @@ import {
   StarOff,
   Eye,
   Building2,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -21,14 +27,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 import {
   Dialog,
   DialogContent,
@@ -36,7 +42,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -46,139 +52,162 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
-import { queryClient } from "@/lib/queryClient";
-import { API_URL } from "@/lib/api";
-import { formatPrice } from "@/lib/format";
-import type { Listing, PaginatedResponse } from "@/types/schema";
+} from '@/components/ui/alert-dialog';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
+import { queryClient } from '@/lib/queryClient';
+import { API_URL } from '@/lib/api';
+import { formatPrice } from '@/lib/format';
+import type { Listing, PaginatedResponse } from '@/types/schema';
 
 export function AdminListings() {
   const { toast } = useToast();
-  const [listingFilter, setListingFilter] = useState("pending");
+  const [listingFilter, setListingFilter] = useState('all');
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const [editingListing, setEditingListing] = useState<Listing | null>(null);
   const [deletingListing, setDeletingListing] = useState<string | null>(null);
 
-  const { data: pendingListings, isLoading: loadingListings } = useQuery<PaginatedResponse<Listing>>({
-    queryKey: ["/api/admin/listings", listingFilter],
+  const { data: pendingListings, isLoading: loadingListings } = useQuery<
+    PaginatedResponse<Listing>
+  >({
+    queryKey: ['/api/admin/listings', listingFilter],
     queryFn: async () => {
-      const token = localStorage.getItem("accessToken");
+      const token = localStorage.getItem('accessToken');
       const params = new URLSearchParams();
-      if (listingFilter !== "all") params.set("status", listingFilter);
+      if (listingFilter !== 'all') params.set('status', listingFilter);
       const response = await fetch(`${API_URL}/api/admin/listings?${params}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!response.ok) throw new Error("Failed to fetch");
+      if (!response.ok) throw new Error('Failed to fetch');
       return response.json();
     },
   });
 
   const approveListing = useMutation({
     mutationFn: async (listingId: string) => {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(`${API_URL}/api/admin/listings/${listingId}/approve`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) throw new Error("Failed to approve");
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch(
+        `${API_URL}/api/admin/listings/${listingId}/approve`,
+        {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      if (!response.ok) throw new Error('Failed to approve');
       return response.json();
     },
     onSuccess: () => {
-      toast({ title: "Listing approved successfully" });
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/listings"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/stats"] });
+      toast({ title: 'Listing approved successfully' });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/listings'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/stats'] });
     },
     onError: () => {
-      toast({ title: "Failed to approve listing", variant: "destructive" });
+      toast({ title: 'Failed to approve listing', variant: 'destructive' });
     },
   });
 
   const rejectListing = useMutation({
     mutationFn: async (listingId: string) => {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(`${API_URL}/api/admin/listings/${listingId}/reject`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) throw new Error("Failed to reject");
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch(
+        `${API_URL}/api/admin/listings/${listingId}/reject`,
+        {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      if (!response.ok) throw new Error('Failed to reject');
       return response.json();
     },
     onSuccess: () => {
-      toast({ title: "Listing rejected successfully" });
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/listings"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/stats"] });
+      toast({ title: 'Listing rejected successfully' });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/listings'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/stats'] });
     },
     onError: () => {
-      toast({ title: "Failed to reject listing", variant: "destructive" });
+      toast({ title: 'Failed to reject listing', variant: 'destructive' });
     },
   });
 
   const toggleFeatured = useMutation({
     mutationFn: async (listingId: string) => {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(`${API_URL}/api/admin/listings/${listingId}/toggle-featured`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) throw new Error("Failed to toggle featured");
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch(
+        `${API_URL}/api/admin/listings/${listingId}/toggle-featured`,
+        {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      if (!response.ok) throw new Error('Failed to toggle featured');
       return response.json();
     },
     onSuccess: () => {
-      toast({ title: "Featured status updated successfully" });
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/listings"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/listings"] });
+      toast({ title: 'Featured status updated successfully' });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/listings'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/listings'] });
     },
     onError: () => {
-      toast({ title: "Failed to update featured status", variant: "destructive" });
+      toast({
+        title: 'Failed to update featured status',
+        variant: 'destructive',
+      });
     },
   });
 
   const deleteListingMutation = useMutation({
     mutationFn: async (listingId: string) => {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(`${API_URL}/api/admin/listings/${listingId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) throw new Error("Failed to delete");
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch(
+        `${API_URL}/api/admin/listings/${listingId}`,
+        {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      if (!response.ok) throw new Error('Failed to delete');
       return response.json();
     },
     onSuccess: () => {
-      toast({ title: "Listing deleted successfully" });
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/listings"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/stats"] });
+      toast({ title: 'Listing deleted successfully' });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/listings'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/stats'] });
       setDeletingListing(null);
     },
     onError: () => {
-      toast({ title: "Failed to delete listing", variant: "destructive" });
+      toast({ title: 'Failed to delete listing', variant: 'destructive' });
     },
   });
 
   const updateListingMutation = useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: Partial<Listing> }) => {
-      const token = localStorage.getItem("accessToken");
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: Partial<Listing>;
+    }) => {
+      const token = localStorage.getItem('accessToken');
       const response = await fetch(`${API_URL}/api/admin/listings/${id}`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error("Failed to update");
+      if (!response.ok) throw new Error('Failed to update');
       return response.json();
     },
     onSuccess: () => {
-      toast({ title: "Listing updated successfully" });
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/listings"] });
+      toast({ title: 'Listing updated successfully' });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/listings'] });
       setEditingListing(null);
     },
     onError: () => {
-      toast({ title: "Failed to update listing", variant: "destructive" });
+      toast({ title: 'Failed to update listing', variant: 'destructive' });
     },
   });
 
@@ -188,17 +217,21 @@ export function AdminListings() {
     e.preventDefault();
     if (!editingListing) return;
     const formData = new FormData(e.currentTarget);
-    const priceValue = formData.get("price");
-    const addressValue = formData.get("address") as string;
+    const priceValue = formData.get('price');
+    const price =
+      typeof priceValue === 'string' && priceValue !== ''
+        ? priceValue
+        : undefined;
+    const addressValue = formData.get('address') as string;
     const updates: Partial<Listing> = {
-      title: formData.get("title") as string,
-      description: formData.get("description") as string,
-      price: priceValue ? Number(priceValue) : undefined,
+      title: formData.get('title') as string,
+      description: formData.get('description') as string,
+      price,
       address: addressValue || undefined,
-      city: formData.get("city") as string,
-      bedrooms: Number(formData.get("bedrooms")) || undefined,
-      bathrooms: Number(formData.get("bathrooms")) || undefined,
-      areaSqFt: Number(formData.get("areaSqFt")) || undefined,
+      city: formData.get('city') as string,
+      bedrooms: Number(formData.get('bedrooms')) || undefined,
+      bathrooms: Number(formData.get('bathrooms')) || undefined,
+      areaSqFt: Number(formData.get('areaSqFt')) || undefined,
     };
     updateListingMutation.mutate({ id: editingListing.id, data: updates });
   };
@@ -209,7 +242,9 @@ export function AdminListings() {
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle>Property Management</CardTitle>
-            <CardDescription>View, edit, and moderate all property listings</CardDescription>
+            <CardDescription>
+              View, edit, and moderate all property listings
+            </CardDescription>
           </div>
           <Select value={listingFilter} onValueChange={setListingFilter}>
             <SelectTrigger className="w-40" data-testid="select-listing-filter">
@@ -243,7 +278,7 @@ export function AdminListings() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {pendingListings.data.map((listing) => (
+                  {pendingListings.data.map(listing => (
                     <TableRow key={listing.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
@@ -257,8 +292,12 @@ export function AdminListings() {
                             )}
                           </div>
                           <div className="min-w-0">
-                            <p className="font-medium line-clamp-1">{listing.title}</p>
-                            <p className="text-sm text-muted-foreground">{listing.propertyType}</p>
+                            <p className="font-medium line-clamp-1">
+                              {listing.title}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              {listing.propertyType}
+                            </p>
                           </div>
                         </div>
                       </TableCell>
@@ -270,11 +309,11 @@ export function AdminListings() {
                         <div className="flex items-center gap-2">
                           <Badge
                             variant={
-                              listing.status === "pending"
-                                ? "outline"
-                                : listing.status === "published"
-                                ? "default"
-                                : "destructive"
+                              listing.status === 'pending'
+                                ? 'outline'
+                                : listing.status === 'published'
+                                  ? 'default'
+                                  : 'destructive'
                             }
                           >
                             {listing.status}
@@ -306,11 +345,15 @@ export function AdminListings() {
                             size="sm"
                             variant="ghost"
                             onClick={() => toggleFeatured.mutate(listing.id)}
-                            title={listing.isFeatured ? "Remove from Featured" : "Mark as Featured"}
+                            title={
+                              listing.isFeatured
+                                ? 'Remove from Featured'
+                                : 'Mark as Featured'
+                            }
                             className={
                               listing.isFeatured
-                                ? "text-yellow-600 hover:text-yellow-700"
-                                : "hover:text-yellow-600"
+                                ? 'text-yellow-600 hover:text-yellow-700'
+                                : 'hover:text-yellow-600'
                             }
                           >
                             {listing.isFeatured ? (
@@ -319,13 +362,15 @@ export function AdminListings() {
                               <Star className="h-4 w-4" />
                             )}
                           </Button>
-                          {listing.status === "pending" && (
+                          {listing.status === 'pending' && (
                             <>
                               <Button
                                 size="sm"
                                 variant="ghost"
                                 className="text-green-600"
-                                onClick={() => approveListing.mutate(listing.id)}
+                                onClick={() =>
+                                  approveListing.mutate(listing.id)
+                                }
                                 title="Approve"
                               >
                                 <CheckCircle className="h-4 w-4" />
@@ -361,7 +406,7 @@ export function AdminListings() {
             <div className="py-12 text-center">
               <Building2 className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <p className="text-muted-foreground">
-                No {listingFilter !== "all" ? listingFilter : ""} listings found
+                No {listingFilter !== 'all' ? listingFilter : ''} listings found
               </p>
             </div>
           )}
@@ -369,16 +414,23 @@ export function AdminListings() {
       </Card>
 
       {/* View Listing Dialog */}
-      <Dialog open={!!selectedListing} onOpenChange={() => setSelectedListing(null)}>
+      <Dialog
+        open={!!selectedListing}
+        onOpenChange={() => setSelectedListing(null)}
+      >
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Listing Details</DialogTitle>
-            <DialogDescription>View complete property information</DialogDescription>
+            <DialogDescription>
+              View complete property information
+            </DialogDescription>
           </DialogHeader>
           {selectedListing && (
             <div className="space-y-4">
               <div>
-                <h3 className="font-semibold text-lg">{selectedListing.title}</h3>
+                <h3 className="font-semibold text-lg">
+                  {selectedListing.title}
+                </h3>
                 <p className="text-2xl font-bold text-primary">
                   {formatPrice(selectedListing.price)}
                 </p>
@@ -386,11 +438,15 @@ export function AdminListings() {
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <span className="text-muted-foreground">Type:</span>
-                  <p className="font-medium capitalize">{selectedListing.propertyType}</p>
+                  <p className="font-medium capitalize">
+                    {selectedListing.propertyType}
+                  </p>
                 </div>
                 <div>
                   <span className="text-muted-foreground">Listing Type:</span>
-                  <p className="font-medium capitalize">{selectedListing.listingType}</p>
+                  <p className="font-medium capitalize">
+                    {selectedListing.listingType}
+                  </p>
                 </div>
                 <div>
                   <span className="text-muted-foreground">Location:</span>
@@ -398,7 +454,9 @@ export function AdminListings() {
                 </div>
                 <div>
                   <span className="text-muted-foreground">Address:</span>
-                  <p className="font-medium">{selectedListing.address || "Not provided"}</p>
+                  <p className="font-medium">
+                    {selectedListing.address || 'Not provided'}
+                  </p>
                 </div>
                 {selectedListing.bedrooms && (
                   <div>
@@ -415,14 +473,20 @@ export function AdminListings() {
                 {selectedListing.areaSqFt && (
                   <div>
                     <span className="text-muted-foreground">Area:</span>
-                    <p className="font-medium">{selectedListing.areaSqFt} sq ft</p>
+                    <p className="font-medium">
+                      {selectedListing.areaSqFt} sq ft
+                    </p>
                   </div>
                 )}
                 <div>
                   <span className="text-muted-foreground">Status:</span>
                   <Badge
                     className="ml-2"
-                    variant={selectedListing.status === "published" ? "default" : "outline"}
+                    variant={
+                      selectedListing.status === 'published'
+                        ? 'default'
+                        : 'outline'
+                    }
                   >
                     {selectedListing.status}
                   </Badge>
@@ -455,7 +519,10 @@ export function AdminListings() {
       </Dialog>
 
       {/* Edit Listing Dialog */}
-      <Dialog open={!!editingListing} onOpenChange={() => setEditingListing(null)}>
+      <Dialog
+        open={!!editingListing}
+        onOpenChange={() => setEditingListing(null)}
+      >
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Listing</DialogTitle>
@@ -465,14 +532,19 @@ export function AdminListings() {
             <form onSubmit={handleSaveListing} className="space-y-4">
               <div>
                 <Label htmlFor="title">Title</Label>
-                <Input id="title" name="title" defaultValue={editingListing.title} required />
+                <Input
+                  id="title"
+                  name="title"
+                  defaultValue={editingListing.title}
+                  required
+                />
               </div>
               <div>
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"
                   name="description"
-                  defaultValue={editingListing.description || ""}
+                  defaultValue={editingListing.description || ''}
                   rows={4}
                 />
               </div>
@@ -482,8 +554,13 @@ export function AdminListings() {
                   <Input
                     id="price"
                     name="price"
-                    type="number"
-                    defaultValue={typeof editingListing.price === "number" || typeof editingListing.price === "string" ? editingListing.price : ""}
+                    type="text"
+                    defaultValue={
+                      typeof editingListing.price === 'number' ||
+                      typeof editingListing.price === 'string'
+                        ? editingListing.price
+                        : ''
+                    }
                   />
                 </div>
                 <div>
@@ -492,7 +569,7 @@ export function AdminListings() {
                     id="areaSqFt"
                     name="areaSqFt"
                     type="number"
-                    defaultValue={editingListing.areaSqFt || ""}
+                    defaultValue={editingListing.areaSqFt || ''}
                   />
                 </div>
               </div>
@@ -503,7 +580,7 @@ export function AdminListings() {
                     id="bedrooms"
                     name="bedrooms"
                     type="number"
-                    defaultValue={editingListing.bedrooms || ""}
+                    defaultValue={editingListing.bedrooms || ''}
                   />
                 </div>
                 <div>
@@ -512,21 +589,26 @@ export function AdminListings() {
                     id="bathrooms"
                     name="bathrooms"
                     type="number"
-                    defaultValue={editingListing.bathrooms || ""}
+                    defaultValue={editingListing.bathrooms || ''}
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="city">City</Label>
-                  <Input id="city" name="city" defaultValue={editingListing.city} required />
+                  <Input
+                    id="city"
+                    name="city"
+                    defaultValue={editingListing.city}
+                    required
+                  />
                 </div>
                 <div>
                   <Label htmlFor="address">Address (Optional)</Label>
                   <Input
                     id="address"
                     name="address"
-                    defaultValue={editingListing.address || ""}
+                    defaultValue={editingListing.address || ''}
                   />
                 </div>
               </div>
@@ -538,8 +620,13 @@ export function AdminListings() {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={updateListingMutation.isPending}>
-                  {updateListingMutation.isPending ? "Saving..." : "Save Changes"}
+                <Button
+                  type="submit"
+                  disabled={updateListingMutation.isPending}
+                >
+                  {updateListingMutation.isPending
+                    ? 'Saving...'
+                    : 'Save Changes'}
                 </Button>
               </DialogFooter>
             </form>
@@ -548,18 +635,24 @@ export function AdminListings() {
       </Dialog>
 
       {/* Delete Listing Confirmation */}
-      <AlertDialog open={!!deletingListing} onOpenChange={() => setDeletingListing(null)}>
+      <AlertDialog
+        open={!!deletingListing}
+        onOpenChange={() => setDeletingListing(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete this listing. This action cannot be undone.
+              This will permanently delete this listing. This action cannot be
+              undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => deletingListing && deleteListingMutation.mutate(deletingListing)}
+              onClick={() =>
+                deletingListing && deleteListingMutation.mutate(deletingListing)
+              }
               className="bg-red-600 hover:bg-red-700"
             >
               Delete

@@ -1,30 +1,34 @@
+import { parsePriceAmount } from './price';
+
 // Currency formatting for Bangladesh Taka
 export function formatPrice(amount?: number | string | null, compact = false): string {
   if (amount === undefined || amount === null || amount === "") {
     return "Price on request";
   }
 
-  // If the price is a string, check if it's a numeric string
+  let numericAmount = typeof amount === 'number' ? amount : 0;
+
+  // If the price is a string, check if it contains a safe numeric amount.
   if (typeof amount === 'string') {
-    const numericValue = parseFloat(amount);
-    // If it's a valid number string, format it as currency
-    if (!isNaN(numericValue)) {
-      amount = numericValue;
-    } else {
-      // Otherwise, return the text as-is (e.g., "Contact for Price")
+    const numericValue = parsePriceAmount(amount);
+    if (numericValue === undefined) {
       return amount;
     }
+
+    numericAmount = numericValue;
   }
+
+  amount = numericAmount;
 
   // Format as currency
   if (compact) {
-    if (amount >= 10000000) {
+    if (numericAmount >= 10000000) {
       return `৳${(amount / 10000000).toFixed(1)}Cr`;
     }
-    if (amount >= 100000) {
+    if (numericAmount >= 100000) {
       return `৳${(amount / 100000).toFixed(1)}L`;
     }
-    if (amount >= 1000) {
+    if (numericAmount >= 1000) {
       return `৳${(amount / 1000).toFixed(0)}K`;
     }
   }

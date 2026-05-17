@@ -52,6 +52,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/lib/auth';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { API_URL } from '@/lib/api';
+import { parsePriceAmount } from '@/lib/price';
 import {
   listingFormSchema,
   propertyTypes,
@@ -134,6 +135,15 @@ function CreateListingContent() {
       chatEnabled: true,
     },
   });
+
+  const updatePricePerSqft = (price: string | number | undefined) => {
+    const numericPrice = parsePriceAmount(price);
+    const area = form.getValues('areaSqFt');
+
+    if (numericPrice !== undefined && numericPrice > 0 && area && area > 0) {
+      form.setValue('pricePerSqft', Math.round(numericPrice / area));
+    }
+  };
 
   // Upload images to Cloudinary
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -953,9 +963,13 @@ function CreateListingContent() {
                             value={field.value || ''}
                             onChange={e => {
                               const value = e.target.value;
-                              field.onChange(
-                                value === '' ? undefined : parseInt(value),
-                              );
+                              const area =
+                                value === '' ? undefined : parseInt(value);
+                              field.onChange(area);
+
+                              if (area && area > 0) {
+                                updatePricePerSqft(form.getValues('price'));
+                              }
                             }}
                             data-testid="input-area"
                           />
@@ -1473,28 +1487,21 @@ function CreateListingContent() {
                           <FormControl>
                             {priceType === 'numeric' ? (
                               <Input
-                                type="number"
+                                type="text"
+                                inputMode="decimal"
                                 placeholder="Enter price"
                                 value={
-                                  typeof field.value === 'number'
-                                    ? field.value
-                                    : ''
+                                  field.value === undefined ||
+                                  field.value === null
+                                    ? ''
+                                    : String(field.value)
                                 }
                                 onChange={e => {
                                   const value = e.target.value;
-                                  const val =
-                                    value === '' ? undefined : parseInt(value);
-                                  field.onChange(val);
-                                  // Auto-compute pricePerSqft
-                                  if (val) {
-                                    const area = form.getValues('areaSqFt');
-                                    if (area && area > 0) {
-                                      form.setValue(
-                                        'pricePerSqft',
-                                        Math.round(val / area),
-                                      );
-                                    }
-                                  }
+                                  const price =
+                                    value === '' ? undefined : value;
+                                  field.onChange(price);
+                                  updatePricePerSqft(price);
                                 }}
                                 data-testid="input-price"
                               />
@@ -1503,11 +1510,18 @@ function CreateListingContent() {
                                 type="text"
                                 placeholder="e.g., Contact for Price, Price on Request"
                                 value={
-                                  typeof field.value === 'string'
-                                    ? field.value
-                                    : ''
+                                  field.value === undefined ||
+                                  field.value === null
+                                    ? ''
+                                    : String(field.value)
                                 }
-                                onChange={e => field.onChange(e.target.value)}
+                                onChange={e =>
+                                  field.onChange(
+                                    e.target.value === ''
+                                      ? undefined
+                                      : e.target.value,
+                                  )
+                                }
                                 data-testid="input-price-text"
                               />
                             )}

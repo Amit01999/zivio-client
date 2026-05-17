@@ -118,7 +118,7 @@ export interface Listing {
   description?: string | null;
 
   // Pricing
-  price?: number | string | null; // Supports both numeric and text values (e.g., "Contact for Price")
+  price?: string | null; // Stored as text (e.g., "3.3 crore", "Contact for Price")
   pricePerSqft?: number | null;
   listingType: ListingType;
   negotiable?: boolean | null;
@@ -200,7 +200,7 @@ export interface InsertListing {
   description?: string;
 
   // Pricing
-  price?: number | string; // Supports both numeric and text values (e.g., "Contact for Price")
+  price?: string; // Stored as text; legacy listings may still return numeric prices
   pricePerSqft?: number;
   negotiable?: boolean;
 
@@ -580,7 +580,9 @@ export const listingFormSchema = z.object({
       z.number().min(1, "Price must be greater than 0"),
       z.string().min(1, "Price is required")
     ]).optional()
-  ),
+  ).transform((val) => {
+    return typeof val === "number" ? val.toString() : val;
+  }),
   pricePerSqft: z.number().optional(),
   negotiable: z.boolean().optional(),
 
